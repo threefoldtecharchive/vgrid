@@ -36,7 +36,7 @@ struct Body {
 
 pub fn (mut explorer Explorer) entity_list() ?[]TFGridEntity {
 	mut query := GraphqlQuery{
-		query: '{ entities { name, entityId, name, gridVersion, countryId, cityId, address } }'
+		query: '{ entities { name, entityId, name, gridVersion, country, city } }'
 		operation: 'getAll'
 	}
 
@@ -53,7 +53,7 @@ pub fn (mut explorer Explorer) entity_list() ?[]TFGridEntity {
 
 pub fn (mut explorer Explorer) entity_by_id(id u32) ?TFGridEntity {
 	mut query := GraphqlQuery{
-		query: '{ entities(where: {entityId_eq: $id }) { name, entityId, name, gridVersion, countryId, cityId, address } }'
+		query: '{ entities(where: {entityId_eq: $id }) { name, entityId, name, gridVersion, country, city } }'
 		operation: 'getOne'
 	}
 
@@ -116,7 +116,7 @@ pub fn (mut explorer Explorer) twin_by_id(id u32) ?TFGridTwin {
 
 pub fn (mut explorer Explorer) nodes_list() ?[]TFGridNode {
 	mut query := GraphqlQuery{
-		query: '{ nodes { gridVersion, nodeId, farmId, twinId, countryId, cityId, sru, cru, hru, mru, role, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 }, address } }'
+		query: '{ nodes { gridVersion, nodeId, farmId, twinId, country, city, sru, cru, hru, mru, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 } } }'
 		operation: 'getAll'
 	}
 
@@ -133,7 +133,7 @@ pub fn (mut explorer Explorer) nodes_list() ?[]TFGridNode {
 
 pub fn (mut explorer Explorer) node_by_id(id u32) ?TFGridNode {
 	mut query := GraphqlQuery{
-		query: '{ nodes(where: { nodeId_eq: $id }) { gridVersion, nodeId, farmId, twinId, countryId, cityId, sru, cru, hru, mru, role, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 }, address } }'
+		query: '{ nodes(where: { nodeId_eq: $id }) { gridVersion, nodeId, farmId, twinId, country, city, sru, cru, hru, mru, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 } } }'
 		operation: 'getOne'
 	}
 
@@ -156,7 +156,7 @@ pub fn (mut explorer Explorer) node_by_id(id u32) ?TFGridNode {
 
 pub fn (mut explorer Explorer) nodes_by_resources(sru u64, cru u64, hru u64, mru u64) ?[]TFGridNode {
 	mut query := GraphqlQuery{
-		query: '{ nodes(where: { sru_gt: $sru, cru_gt: $cru, hru_gt: $hru, mru_gt: $mru }) { gridVersion, nodeId, farmId, twinId, countryId, cityId, sru, cru, hru, mru, role, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 }, address } }'
+		query: '{ nodes(where: { sru_gt: $sru, cru_gt: $cru, hru_gt: $hru, mru_gt: $mru }) { gridVersion, nodeId, farmId, twinId, country, city, sru, cru, hru, mru, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 } } }'
 		operation: 'getAll'
 	}
 
@@ -173,7 +173,7 @@ pub fn (mut explorer Explorer) nodes_by_resources(sru u64, cru u64, hru u64, mru
 
 pub fn (mut explorer Explorer) nodes_by_location(latitude string, longitude string) ?[]TFGridNode {
 	mut query := GraphqlQuery{
-		query: '{ nodes(where: {location: { latitude_eq: "$latitude", longitude_eq: "$longitude" }}) { gridVersion, nodeId, farmId, twinId, countryId, cityId, sru, cru, hru, mru, role, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 }, address } }'
+		query: '{ nodes(where: {location: { latitude_eq: "$latitude", longitude_eq: "$longitude" }}) { gridVersion, nodeId, farmId, twinId, country, city, sru, cru, hru, mru, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 } } }'
 		operation: 'getAll'
 	}
 
@@ -189,28 +189,20 @@ pub fn (mut explorer Explorer) nodes_by_location(latitude string, longitude stri
 }
 pub fn (mut explorer Explorer) nodes_by_country_city(geoLocation GeoLocation) ?[]TFGridNode {
 	mut sub_query:=""
-	if geoLocation.city_name!=""{
-		if city := explorer.city_by_name(geoLocation.city_name) {
-			sub_query+="cityId_eq: $city.id,"
-		}
-		else {
-			panic("invalid city name")
-		}
+
+	if geoLocation.city_name != "" {
+		sub_query += 'city_eq: "$geoLocation.city_name",'
 	}
-	if geoLocation.country_name!=""{
-		if country := explorer.country_by_name(geoLocation.country_name){
-			sub_query+= "countryId_eq: $country.id,"
-		}
-		else{
-			panic("invalid country name")
-		}
+
+	if geoLocation.country_name != "" {
+		sub_query += 'country_eq: "$geoLocation.country_name",'
 	}
 
 	mut query := GraphqlQuery{
-		query: '{ nodes(where: {$sub_query}) { gridVersion, nodeId, farmId, twinId, countryId, cityId, sru, cru, hru, mru, role, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 }, address } }'
+		query: '{ nodes(where: {$sub_query}) { gridVersion, nodeId, farmId, twinId, country, city, sru, cru, hru, mru, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 }, id } }'
 		operation: 'getAll'
 	}
-	
+
 	req := make_post_request_query(explorer.ipaddr, query) ?
 
 	res := req.do() ?
@@ -224,7 +216,7 @@ pub fn (mut explorer Explorer) nodes_by_country_city(geoLocation GeoLocation) ?[
 
 pub fn (mut explorer Explorer) farms_list() ?[]TFGridFarmer {
 	mut query := GraphqlQuery{
-		query: '{ farms { gridVersion, farmId, twinId, name, countryId, cityId, pricingPolicyId, certificationType } }'
+		query: '{ farms { gridVersion, farmId, twinId, name, country, city, pricingPolicyId, certificationType } }'
 		operation: 'getAll'
 	}
 
@@ -241,7 +233,7 @@ pub fn (mut explorer Explorer) farms_list() ?[]TFGridFarmer {
 
 pub fn (mut explorer Explorer) farm_by_id(id u32) ?TFGridFarmer {
 	mut query := GraphqlQuery{
-		query: '{ farms(where: { farmId_eq: $id }) { gridVersion, farmId, twinId, name, countryId, cityId, pricingPolicyId, certificationType } }'
+		query: '{ farms(where: { farmId_eq: $id }) { gridVersion, farmId, twinId, name, country, city, pricingPolicyId, certificationType } }'
 		operation: 'getOne'
 	}
 
@@ -342,7 +334,7 @@ pub fn (mut explorer Explorer) country_by_id(id u32) ?Country {
 
 pub fn (mut explorer Explorer) cities_list() ?[]City {
 	mut query := GraphqlQuery{
-		query: '{ cities(limit: 10000) { name, countryId } }'
+		query: '{ cities(limit: 10000) { name, country } }'
 		operation: 'getAll'
 	}
 
@@ -359,7 +351,7 @@ pub fn (mut explorer Explorer) cities_list() ?[]City {
 
 pub fn (mut explorer Explorer) cities_by_name_substring(substring string) ?[]City {
 	mut query := GraphqlQuery{
-		query: '{ cities(where: { name_contains: "$substring" }) { name, countryId } }'
+		query: '{ cities(where: { name_contains: "$substring" }) { name, country } }'
 		operation: 'getAll'
 	}
 
@@ -375,7 +367,7 @@ pub fn (mut explorer Explorer) cities_by_name_substring(substring string) ?[]Cit
 }
 pub fn (mut explorer Explorer) city_by_name(name string) ?City {
 	mut query := GraphqlQuery{
-		query: '{ cities(where: { name_eq: "$name" }) { name, countryId, id } }'
+		query: '{ cities(where: { name_eq: "$name" }) { name, country, id } }'
 		operation: 'getOne'
 	}
 
@@ -397,7 +389,7 @@ pub fn (mut explorer Explorer) city_by_name(name string) ?City {
 
 pub fn (mut explorer Explorer) city_by_id(id u32) ?City {
 	mut query := GraphqlQuery{
-		query: '{ cities(where: { id_eq: $id }) { name, countryId } }'
+		query: '{ cities(where: { id_eq: $id }) { name, country } }'
 		operation: 'getAllById'
 	}
 
@@ -420,7 +412,7 @@ pub fn (mut explorer Explorer) city_by_id(id u32) ?City {
 
 pub fn (mut explorer Explorer) cities_by_country_id(country_id u32) ?[]City {
 	mut query := GraphqlQuery{
-		query: '{ cities(where: { countryId_eq: $country_id }) { name, countryId } }'
+		query: '{ cities(where: { country_eq: $country_id }) { name, country } }'
 		operation: 'getAllByCountryId'
 	}
 

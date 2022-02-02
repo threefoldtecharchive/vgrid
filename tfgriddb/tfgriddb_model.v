@@ -6,10 +6,8 @@ pub struct TFGridEntity {
 	grid_version u32    [json: gridVersion]
 	id           u32    [json: entityId]
 	name         string [json: name]
-	country_id   u32    [json: countryId]
-	city_id      u32    [json: cityId]
-	// substrate ed25519 ss58 address
-	address      string
+	country      string [json: country]
+	city         string [json: city]
 }
 
 // TFGridTwin represents a digital copy of a user
@@ -30,15 +28,13 @@ pub struct TFGridNode {
 	id           u32      [json: nodeId]
 	farm_id      u32      [json: farmId]
 	twin_id      u32      [json: twinId]
-	country_id   u32      [json: countryId]
-	city_id      u32      [json: cityId]
-	address      string   [json: address]
+	country      string   [json: country]
+	city         string   [json: city]
 	location     Location [json: location]
 	hru          string
 	sru          string
 	cru          string
 	mru          string
-	role 		 string
 	public_config PublicConfig [json: publicConfig]
 }
 
@@ -61,8 +57,8 @@ pub struct TFGridFarmer {
 	// link to digital twin farmer
 	twin_id           u32    [json: twinId]
 	name              string
-	country_id        u32    [json: countryId]
-	city_id           u32    [json: cityId]
+	// country           string [json: country]
+	// city              string [json: city]
 	// id of the pricing policy that this farmer has acquired
 	pricing_policy_id u32    [json: pricingPolicyId]
 	// cerfication type of the farmer
@@ -78,16 +74,16 @@ pub struct PublicIP {
 
 pub struct Country {
 	pub:
-	id string [json: id]
+	id   string [json: id]
 	name string [json: name]
 	code string [json: code]
 }
 
 pub struct City {
 	pub:
-	id string [json: id]
-	name       string [json: name]
-	country_id string [json: countryId]
+	id   string [json: id]
+	name string [json: name]
+	code string [json: code]
 }
 
 pub struct PricingPolicy {
