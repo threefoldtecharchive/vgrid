@@ -1,4 +1,4 @@
-module tfgriddb
+module explorer
 
 // TFGridEntity represents an entity in the threefold grid database
 // an entity is linked to a physical person

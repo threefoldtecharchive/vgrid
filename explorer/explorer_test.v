@@ -1,8 +1,8 @@
 
-import tfgriddb
+import explorer
 
 fn test_tfgrid() ? {
-	mut tfgrid := tfgriddb.tfgrid_new() ?
+	mut tfgrid := explorer.tfgrid_new() ?
 
 	entities := tfgrid.entity_list() ?
 	println(entities)
@@ -55,7 +55,7 @@ fn test_tfgrid() ? {
 	println(cities_by_country_id)
 
 	// Get nodes by country or city 
-	mut geo_location := tfgriddb.GeoLocation{}
+	mut geo_location := explorer.GeoLocation{}
   	geo_location.country_name = "Albania"
   	mut nodes_by_country_city := tfgrid.nodes_by_country_city(geo_location)?
 	println(nodes_by_country_city)

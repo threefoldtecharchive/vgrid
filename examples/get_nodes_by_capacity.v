@@ -1,9 +1,9 @@
-import threefoldtech.vgrid.tfgriddb
+import threefoldtech.vgrid.explorer
 import os
 
 fn get_nodes_by_capacity(sru u64, cru u64, hru u64, mru u64)? {
-	mut tfgrid := tfgriddb.tfgrid_new() ?
-	mut nodes_by_capacity := tfgrid.nodes_list_by_resource(sru, cru, hru, mru)?
+	mut explorer := explorer.get(.test)
+	mut nodes_by_capacity := explorer.nodes_by_resources(sru, cru, hru, mru)?
 	println(nodes_by_capacity)
 }
 

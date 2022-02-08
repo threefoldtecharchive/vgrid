@@ -1,14 +1,14 @@
-import threefoldtech.vgrid.tfgriddb
+import threefoldtech.vgrid.explorer
 import os
 
-fn get_nodes_by_city_country(geo_location tfgriddb.GeoLocation) ? {
-	mut tfgrid := tfgriddb.tfgrid_new() ?
-	mut nodes_by_country_city := tfgrid.nodes_by_country_city(geo_location)?
+fn get_nodes_by_city_country(geo_location explorer.GeoLocation) ? {
+	mut explorer := explorer.get(.test)
+	mut nodes_by_country_city := explorer.nodes_by_country_city(geo_location)?
 	println(nodes_by_country_city)
 }
 
 fn main(){
-	mut geo_location := tfgriddb.GeoLocation{}
+	mut geo_location := explorer.GeoLocation{}
 	mut city_name := ""
 	mut country_name := ""
 
