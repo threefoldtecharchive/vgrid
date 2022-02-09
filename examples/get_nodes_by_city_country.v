@@ -2,15 +2,23 @@ import threefoldtech.vgrid.explorer
 import os
 
 fn get_nodes_by_city_country(geo_location explorer.GeoLocation) ? {
-	mut explorer := explorer.get(.test)
-	mut nodes_by_country_city := explorer.nodes_by_country_city(geo_location)?
+	mut explorer_con := explorer.get(.test)
+	mut nodes_by_country_city := explorer_con.nodes_by_country_city(geo_location)?
 	println(nodes_by_country_city)
 }
 
 fn main(){
+	mut explorer_con := explorer.get(.test)
 	mut geo_location := explorer.GeoLocation{}
 	mut city_name := ""
-	mut country_name := ""
+	mut country_name := "Belgium"
+
+
+	mut explorer := explorer.get(.test)
+	
+
+	cl := explorer_con.countries_list()?
+	println(cl)
 
 	if "--help" in os.args {
 		println("This method to get nodes by city or country or both \n
