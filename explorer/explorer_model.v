@@ -3,6 +3,7 @@ module explorer
 // TFGridEntity represents an entity in the threefold grid database
 // an entity is linked to a physical person
 pub struct TFGridEntity {
+pub:	
 	grid_version u32    [json: gridVersion]
 	id           u32    [json: entityId]
 	name         string [json: name]
@@ -24,6 +25,7 @@ pub:
 
 // TFGridNode represents a Threefold node in the threefold grid database
 pub struct TFGridNode {
+pub:	
 	grid_version u32   [json: gridVersion]
 	id           u32      [json: nodeId]
 	farm_id      u32      [json: farmId]
@@ -39,6 +41,7 @@ pub struct TFGridNode {
 }
 
 pub struct PublicConfig {
+pub:	
 	ipv4 string
 	ipv6 string
 	gw4 string
@@ -46,12 +49,14 @@ pub struct PublicConfig {
 }
 
 pub struct Location {
+pub:	
 	longitude string
 	latitude  string
 }
 
 // TFGridFarmer represents a farmer in the threefold grid database
 pub struct TFGridFarmer {
+pub:
 	grid_version      u32    [json: gridVersion]
 	id                u32    [json: farmId]
 	// link to digital twin farmer
@@ -67,26 +72,28 @@ pub struct TFGridFarmer {
 
 // Todo: hook up public ips 
 pub struct PublicIP {
+pub:	
 	farm_id           u32    [json: farmID]
 	ip				  string
 	contract_id		  u32
 }
 
 pub struct Country {
-	pub:
+pub mut:
 	id   string [json: id]
 	name string [json: name]
 	code string [json: code]
 }
 
 pub struct City {
-	pub:
+pub:
 	id   string [json: id]
 	name string [json: name]
 	code string [json: code]
 }
 
 pub struct PricingPolicy {
+pub:	
 	grid_version      u32    [json: gridVersion]
 	id				  u32	 [json:pricingPolicyID]
 	name			  string [json:name]
@@ -97,7 +104,7 @@ pub struct PricingPolicy {
 }
 
 pub struct GeoLocation{
-	pub mut:
-		city_name string
-		country_name string
-	}
+pub mut:
+	city_name string
+	country_name string
+}

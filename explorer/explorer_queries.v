@@ -48,7 +48,7 @@ pub fn (mut explorer ExplorerConnection) twin_by_id(id u32) ?TFGridTwin {
 
 pub fn (mut explorer ExplorerConnection) nodes_list() ?[]TFGridNode {
 	data := explorer.query(
-			query: '{ nodes { gridVersion, nodeId, farmId, twinId, country, city, sru, cru, hru, mru, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 } } }'
+			query: '{ nodes(orderBy: nodeId_ASC, limit: 5000) { gridVersion, nodeId, farmId, twinId, country, city, sru, cru, hru, mru, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 } } }'
 			operation: 'getAll'
 		)?
 	return data.data.nodes
