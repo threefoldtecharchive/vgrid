@@ -107,7 +107,16 @@ pub fn (mut explorer ExplorerConnection) nodes_by_country_city(geoLocation GeoLo
 
 pub fn (mut explorer ExplorerConnection) farms_list() ?[]TFGridFarmer {
 	data := explorer.query(
-			query: '{ farms { gridVersion, farmId, twinId, name, country, city, pricingPolicyId, certificationType } }'
+			query: '
+			{
+				farms {
+					gridVersion
+					farmId
+					name
+					certificationType
+				}
+			}
+			'
 			operation: 'getAll'
 		)?
 	return data.data.farms

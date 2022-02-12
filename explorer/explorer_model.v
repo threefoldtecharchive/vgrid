@@ -59,13 +59,7 @@ pub struct TFGridFarmer {
 pub:
 	grid_version      u32    [json: gridVersion]
 	id                u32    [json: farmId]
-	// link to digital twin farmer
-	twin_id           u32    [json: twinId]
 	name              string
-	// country           string [json: country]
-	// city              string [json: city]
-	// id of the pricing policy that this farmer has acquired
-	pricing_policy_id u32    [json: pricingPolicyId]
 	// cerfication type of the farmer
 	certification_type string [json: certificationType]
 }

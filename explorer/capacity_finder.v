@@ -11,7 +11,7 @@ pub enum Region {
 pub struct NodeFinderArgs {
 pub:
 	//min GB of memory in node
-	mem_min_gb				int
+	mem_min_gb				f32
 	//min nr of virtual cores 
 	cpu_min_vcore			int
 	//min nr of GB in SSD
@@ -72,16 +72,22 @@ pub fn (mut explorer ExplorerConnection) nodes_find(args NodeFinderArgs) ?[]grid
 		}
 	}
 	for node in ns{
-		if args.mem_min_gb>node.available_resources.mru{
+
+		cru_available_gb := node.available_resources.cru - node.used_resources.cru
+		mru_available_gb := node.available_resources.mru - node.used_resources.mru
+		hru_available_gb := node.available_resources.hru - node.used_resources.hru
+		sru_available_gb := node.available_resources.sru - node.used_resources.sru
+
+		if args.mem_min_gb>mru_available_gb{
 			continue
 		}
-		if args.cpu_min_vcore>node.available_resources.cru{
+		if args.cpu_min_vcore>cru_available_gb{
 			continue
 		}
-		if args.ssd_min_gb>node.available_resources.sru{
+		if args.ssd_min_gb>sru_available_gb{
 			continue
 		}
-		if args.hdd_min_gb>node.available_resources.hru{
+		if args.hdd_min_gb>hru_available_gb{
 			continue
 		}
 
@@ -89,11 +95,6 @@ pub fn (mut explorer ExplorerConnection) nodes_find(args NodeFinderArgs) ?[]grid
 			if node.nr_pub_ipv4 == 0{
 				continue
 			}
-		}else{
-			//lets not had out nodes where we don't need pubip
-			if node.nr_pub_ipv4 > 0{
-				continue
-			}			
 		}
 
 		if args.region != .world{
