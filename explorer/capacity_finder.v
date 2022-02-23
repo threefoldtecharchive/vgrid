@@ -53,7 +53,9 @@ pub fn (mut explorer ExplorerConnection) node_find(args NodeFinderArgs) ?gridpro
 		return error("Could not find node with findargs:\n $args")
 	}
 
-	c := rand.int_in_range(0,nodes.len-1)
+	c := rand.int_in_range(0,nodes.len-1) or { 
+		return error("Couldn't generate rand number with error: $err")
+	}
 	return nodes[c]
 
 }
