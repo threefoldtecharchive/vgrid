@@ -40,10 +40,10 @@ pub fn (mut e ExplorerConnection) get_nodes(cache_reset bool) ?[]gridproxy.NodeI
 		// println(item)
 		// gp.node_info(int(item.id))?
 	}
-	// println("threads wait")
+	println("threads wait")
 	for item in threads{
 		mut node_info := item.wait() or {
-			print("error in getting info for node")
+			println("error in getting info for node.\n$err")
 			continue
 		}
 		n := nodes_dict[int(node_info.id)]

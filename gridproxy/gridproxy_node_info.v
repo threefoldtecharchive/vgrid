@@ -53,7 +53,10 @@ pub fn (mut h GridproxyConnection) node_info(nodeid int) ?NodeInfo {
 	mut http := h.http.clone()?
 
 	data := http.get_json_str(mut prefix:"nodes/$nodeid") or {
-		return NodeInfo{iserror:true}
+		if err.str().contains("error fetching node capacity"){
+			return NodeInfo{iserror:true}
+		}
+		panic(err)
 	}
 	r := json.decode(NodeInfo_, data) or {
 		return error("error to get jsonstr for node_info, json decode: node: $nodeid")

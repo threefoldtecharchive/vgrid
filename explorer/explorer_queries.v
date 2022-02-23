@@ -50,6 +50,7 @@ pub fn (mut explorer ExplorerConnection) nodes_list() ?[]TFGridNode {
 	data := explorer.query(
 			query: '{ nodes(orderBy: nodeId_ASC, limit: 5000) { gridVersion, nodeId, farmId, twinId, country, city, sru, cru, hru, mru, location{ latitude, longitude }, publicConfig { ipv4, ipv6, gw4, gw6 } } }'
 			operation: 'getAll'
+			cache: false
 		)?
 	return data.data.nodes
 }

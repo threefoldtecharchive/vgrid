@@ -97,6 +97,7 @@ struct GraphqlQuery {
 mut:
 	query     		string
 	operation 		string
+	cache           bool = true
 }
 
 struct ReqData {
@@ -116,10 +117,14 @@ struct Body {
 fn (mut explorer ExplorerConnection) query(query GraphqlQuery) ?ReqData {
 
 	postdata := json.encode(query)
-	result := explorer.http.post_json_str(mut prefix:"",postdata:postdata)?
+	mut cache_disable:=false
+	if query.cache==false{
+		cache_disable=true
+	}
+	result := explorer.http.post_json_str(mut prefix:"",postdata:postdata, cache_disable:cache_disable)?
 
 	data := json.decode(ReqData,result) or {
-		println("=======$result=========")
+		println("=======\n$result\n=========")
 		return error('failed to decode json.\n$err\n$query')
 	}
 	return data
