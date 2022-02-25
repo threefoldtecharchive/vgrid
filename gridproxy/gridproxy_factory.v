@@ -57,7 +57,7 @@ fn  tfgrid_net_string(net TFGridNet) string {
 	return match net {
 		.main { 'main' }
 		.test { 'test' } 
-		.dev { 'def' }
+		.dev { 'dev' }
 	}	
 }
 
