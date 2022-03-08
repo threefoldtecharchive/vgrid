@@ -69,9 +69,7 @@ pub fn get(net TFGridNet) &GridproxyConnection {
 		url := gridproxy_url_get(net)
 		mut httpconn := httpconnection.new("gridproxy_${netstr}",url,true)
 		//do the settings on the connection
-		httpconn.settings.retry = 1
-		httpconn.settings.cache_timeout = 7200 //make the cache timeout 2h
-		httpconn.settings.cache_enable = true
+		httpconn.cache.expire_after = 7200 //make the cache timeout 2h
 		mut connection:=GridproxyConnection{
 			http:httpconn
 		}

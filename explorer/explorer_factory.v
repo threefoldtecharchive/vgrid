@@ -79,9 +79,7 @@ pub fn get(net TFGridNet) &ExplorerConnection {
 		url := explorer_url_get(net)
 		mut httpconn := httpconnection.new("explorer_${netstr}",url,true)
 		//do the settings on the connection
-		httpconn.settings.retry = 1
-		httpconn.settings.cache_timeout = 7200 //make the cache timeout 2h
-		httpconn.settings.cache_enable = true
+		httpconn.cache.expire_after = 7200 //make the cache timeout 2h
 
 		mut expl := ExplorerConnection{http: httpconn,tfgridnet: net}
 		f.instances[netstr] = &expl
@@ -121,12 +119,11 @@ fn (mut explorer ExplorerConnection) query(query GraphqlQuery) ?ReqData {
 	if query.cache==false{
 		cache_disable=true
 	}
-	result := explorer.http.post_json_str(mut prefix:"",postdata:postdata, cache_disable:cache_disable)?
+	result := explorer.http.post_json_str(mut prefix:"", data: postdata, cache_disable: cache_disable)?
 
 	data := json.decode(ReqData,result) or {
 		println("=======\n$result\n=========")
 		return error('failed to decode json.\n$err\n$query')
 	}
 	return data
-
 }
