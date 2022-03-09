@@ -15,7 +15,7 @@ pub enum ExplorerStatus {
 
 pub struct ExplorerConnection {
 pub mut:
-	http	httpconnection.HTTPConnection
+	http	&httpconnection.HTTPConnection
 	tfgridnet TFGridNet
 }
 
@@ -64,6 +64,23 @@ fn  tfgrid_net_string(net TFGridNet) string {
 	}	
 }
 
+// return always new explorer to be used in threads
+pub fn new (net TFGridNet) &ExplorerConnection {
+	netstr := tfgrid_net_string(net)
+	url := explorer_url_get(net)
+	mut httpconn_new := false
+	// ensure that this explorer have new client of redis for its httpconnection
+	mut httpconn := httpconnection.get("explorer_${netstr}") or {
+		httpconn_new = true
+		httpconnection.new("explorer_${netstr}",url,true)
+	}
+	if !httpconn_new {
+		httpconn = httpconn.clone()
+	}
+	//do the settings on the connection
+	httpconn.cache.expire_after = 7200 //make the cache timeout 2h
+	return &ExplorerConnection{http: httpconn, tfgridnet: net}
+}
 
 //main method to get connection to the explorer connection based on tfgridnet: .main, .test, .dev
 //
