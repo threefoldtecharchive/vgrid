@@ -79,6 +79,7 @@ pub fn new (net TFGridNet) &ExplorerConnection {
 	}
 	//do the settings on the connection
 	httpconn.cache.expire_after = 7200 //make the cache timeout 2h
+	httpconn.cache.allowable_methods << .post
 	return &ExplorerConnection{http: httpconn, tfgridnet: net}
 }
 
@@ -97,7 +98,7 @@ pub fn get(net TFGridNet) &ExplorerConnection {
 		mut httpconn := httpconnection.new("explorer_${netstr}",url,true)
 		//do the settings on the connection
 		httpconn.cache.expire_after = 7200 //make the cache timeout 2h
-
+		httpconn.cache.allowable_methods << .post
 		mut expl := ExplorerConnection{http: httpconn,tfgridnet: net}
 		f.instances[netstr] = &expl
 	}
