@@ -43,8 +43,8 @@ pub fn (mut e ExplorerConnection) get_nodes(cache_reset bool) ?[]gridproxy.NodeI
 
 	if cache_reset{
 		println( " - fetching nodes from explorer, empty cache ")
-		e.http.cache_drop("")?
-		gp.http.cache_drop("")?
+		e.http.cache_drop()?
+		gp.http.cache_drop()?
 	}
 
 	// mut r := explorer.twin_list()?

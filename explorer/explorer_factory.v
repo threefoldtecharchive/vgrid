@@ -15,7 +15,7 @@ pub enum ExplorerStatus {
 
 pub struct ExplorerConnection {
 pub mut:
-	http	httpconnection.HTTPConnection
+	http	&httpconnection.HTTPConnection
 	tfgridnet TFGridNet
 }
 
@@ -64,6 +64,24 @@ fn  tfgrid_net_string(net TFGridNet) string {
 	}	
 }
 
+// return always new explorer to be used in threads
+pub fn new (net TFGridNet) &ExplorerConnection {
+	netstr := tfgrid_net_string(net)
+	url := explorer_url_get(net)
+	mut httpconn_new := false
+	// ensure that this explorer have new client of redis for its httpconnection
+	mut httpconn := httpconnection.get("explorer_${netstr}") or {
+		httpconn_new = true
+		httpconnection.new("explorer_${netstr}",url,true)
+	}
+	if !httpconn_new {
+		httpconn = httpconn.clone()
+	}
+	//do the settings on the connection
+	httpconn.cache.expire_after = 7200 //make the cache timeout 2h
+	httpconn.cache.allowable_methods << .post
+	return &ExplorerConnection{http: httpconn, tfgridnet: net}
+}
 
 //main method to get connection to the explorer connection based on tfgridnet: .main, .test, .dev
 //
@@ -79,10 +97,8 @@ pub fn get(net TFGridNet) &ExplorerConnection {
 		url := explorer_url_get(net)
 		mut httpconn := httpconnection.new("explorer_${netstr}",url,true)
 		//do the settings on the connection
-		httpconn.settings.retry = 1
-		httpconn.settings.cache_timeout = 7200 //make the cache timeout 2h
-		httpconn.settings.cache_enable = true
-
+		httpconn.cache.expire_after = 7200 //make the cache timeout 2h
+		httpconn.cache.allowable_methods << .post
 		mut expl := ExplorerConnection{http: httpconn,tfgridnet: net}
 		f.instances[netstr] = &expl
 	}
@@ -121,12 +137,11 @@ fn (mut explorer ExplorerConnection) query(query GraphqlQuery) ?ReqData {
 	if query.cache==false{
 		cache_disable=true
 	}
-	result := explorer.http.post_json_str(mut prefix:"",postdata:postdata, cache_disable:cache_disable)?
+	result := explorer.http.post_json_str(mut prefix:"", data: postdata, cache_disable: cache_disable)?
 
 	data := json.decode(ReqData,result) or {
 		println("=======\n$result\n=========")
 		return error('failed to decode json.\n$err\n$query')
 	}
 	return data
-
 }

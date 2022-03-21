@@ -50,9 +50,9 @@ pub:
 pub fn (mut h GridproxyConnection) node_info(nodeid int) ?NodeInfo {
 
 	//needed to allow to use threads
-	mut http := h.http.clone()?
+	mut http := h.http.clone()
 
-	data := http.get_json_str(mut prefix:"nodes/$nodeid") or {
+	data := http.get_json_str(mut prefix:"nodes/", id: "$nodeid") or {
 		if err.str().contains("error fetching node capacity"){
 			return NodeInfo{iserror:true}
 		}
@@ -85,7 +85,7 @@ pub fn (mut h GridproxyConnection) node_info(nodeid int) ?NodeInfo {
 
 
 pub fn (mut h GridproxyConnection) nodes_print(nodes []NodeInfo) string {
-	mut res := []string
+	mut res := []string{}
 	res <<"\n\nAVAILABLE NODES (MEM in GB, SSD/HDD in TB):\n-------------------------------------------\n"
 	for node in nodes{
 		cru_available_gb := node.available_resources.cru - node.used_resources.cru
