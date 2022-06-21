@@ -1,18 +1,18 @@
 module model
 
 pub struct Twin {
-	pub:
-		twin_id    i64    [json: twinId]
-		account_id string [json: accountId]
-		ip         string
+pub:
+	twin_id    u32    [json: twinId]
+	account_id string [json: accountId]
+	ip         string
 }
 
 [params]
 pub struct TwinParams {
-	page       i64 | EmptyOption = EmptyOption{}
-	size       i64 | EmptyOption = EmptyOption{}
+	page       u32 | EmptyOption = EmptyOption{}
+	size       u32 | EmptyOption = EmptyOption{}
 	ret_count  string
-	twin_id    i64 | EmptyOption = EmptyOption{}
+	twin_id    u32 | EmptyOption = EmptyOption{}
 	account_id string
 }
 
@@ -20,13 +20,13 @@ pub fn (p &TwinParams) to_map() map[string]string {
 	mut m := map[string]string{}
 	match p.page {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['pages'] = p.page.str()
 		}
 	}
 	match p.size {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['size'] = p.size.str()
 		}
 	}
@@ -35,7 +35,7 @@ pub fn (p &TwinParams) to_map() map[string]string {
 	}
 	match p.twin_id {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['twin_id'] = p.twin_id.str()
 		}
 	}

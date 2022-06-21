@@ -1,11 +1,16 @@
 # Grid Modules (vlang)
  
- to install
+to install
 
 ```
 v install --git https://github.com/threefoldtech/vgrid
 ```
 
-to use 
+## GridProxy Client
+
+to run the basic tests
+```sh
+v -stats test ./gridproxy/
+```
 
 

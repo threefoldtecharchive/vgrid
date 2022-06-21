@@ -1,7 +1,7 @@
 module gridproxy
 
 import json
-import model { GridStats, Node, NodeStatus, NodesParams, Twin, TwinParams, StatsParams }
+import threefoldtech.vgrid.gridproxy.model { GridStats, Node, NodesParams, StatsParams, Twin, TwinParams }
 
 /*
 struct ErrorResponse {
@@ -99,10 +99,10 @@ pub fn (mut c GridproxyClient) get_gateways(params NodesParams) ?[]Node {
 pub fn (mut c GridproxyClient) get_stats(filter StatsParams) ?GridStats {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
-	mut params_map := map[string]string
-	params_map["status"] = match filter.status {
-		.all { "" }
-		.online { "up" }
+	mut params_map := map[string]string{}
+	params_map['status'] = match filter.status {
+		.all { '' }
+		.online { 'up' }
 	}
 
 	res := http_client.send(prefix: 'stats/', params: params_map) or { return err }
@@ -145,10 +145,9 @@ pub fn (mut c GridproxyClient) get_twin_by_id(twin_id int) ?Twin {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := {
-		'twin_id': "$twin_id"
+		'twin_id': '$twin_id'
 	}
 	res := http_client.send(prefix: 'twins/', params: params_map) or { return err }
-	println(params_map)
 	if !res.is_ok() {
 		return error(res.data)
 	}
@@ -160,6 +159,33 @@ pub fn (mut c GridproxyClient) get_twin_by_id(twin_id int) ?Twin {
 	twins := json.decode([]model.Twin, res.data) or {
 		return error('error to get jsonstr for twin, data: $res.data, params: $params_map')
 	}
+	if twins.len == 0 {
+		return error('no twin found for id: $twin_id')
+	}
+	return twins[0]
+}
+
+pub fn (mut c GridproxyClient) get_twin_by_account(account_id string) ?Twin {
+	// needed to allow to use threads
+	mut http_client := c.http_client.clone()
+	params_map := {
+		'account_id': '$account_id'
+	}
+	res := http_client.send(prefix: 'twins/', params: params_map) or { return err }
+	if !res.is_ok() {
+		return error(res.data)
+	}
+
+	if res.data == '' {
+		return error('empty response')
+	}
+
+	twins := json.decode([]model.Twin, res.data) or {
+		return error('error to get jsonstr for twin, data: $res.data, params: $params_map')
+	}
+	if twins.len == 0 {
+		return error('no twin found for account_id: $account_id')
+	}
 	return twins[0]
 }
 
@@ -169,11 +195,9 @@ pub fn (mut c GridproxyClient) check_health() bool {
 	if !res.is_ok() {
 		return false
 	}
-	health_map := json.decode(map[string]string, res.data) or {
-		return false
-	}
+	health_map := json.decode(map[string]string, res.data) or { return false }
 
-	if health_map["ping"] != 'pong' {
+	if health_map['ping'] != 'pong' {
 		return false
 	}
 

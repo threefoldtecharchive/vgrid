@@ -4,7 +4,7 @@ import json
 
 struct NodeResources {
 pub:
-	cru i64
+	cru u32
 	mru ByteUnit
 	sru ByteUnit
 	hru ByteUnit
@@ -34,13 +34,13 @@ pub:
 pub struct Node {
 pub:
 	id                string
-	node_id           i64          [json: nodeId]
-	farm_id           i64          [json: farmId]
-	twin_id           i64          [json: twinId]
-	grid_version      i64          [json: gridVersion]
+	node_id           u32          [json: nodeId]
+	farm_id           u32          [json: farmId]
+	twin_id           u32          [json: twinId]
+	grid_version      u32          [json: gridVersion]
 	uptime            SecondUnit
 	created           UnixTime     [json: created]
-	farming_policy_id i64          [json: farmingPolicyId]
+	farming_policy_id u32          [json: farmingPolicyId]
 	updated_at        UnixTime     [json: updatedAt]
 	capacity          NodeCapacity
 	location          NodeLocation
@@ -48,8 +48,8 @@ pub:
 	certification     string       [json: certificationType]
 	status            string
 	dedicated         bool
-	rent_contract_id  i64          [json: rentContractId]
-	rented_by_twin_id i64          [json: rentedByTwinId]
+	rent_contract_id  u32          [json: rentContractId]
+	rented_by_twin_id u32          [json: rentedByTwinId]
 }
 
 pub fn (n &Node) calc_available_resources() NodeResources {
@@ -70,25 +70,25 @@ pub fn (n &Node) is_online() bool {
 [params]
 pub struct NodesParams {
 pub:
-	page          i64 | EmptyOption = EmptyOption{}
-	size          i64 | EmptyOption = EmptyOption{}
-	ret_count     i64 | EmptyOption = EmptyOption{}
-	free_mru      i64 | EmptyOption = EmptyOption{}
-	free_sru      i64 | EmptyOption = EmptyOption{}
-	free_hru      i64 | EmptyOption = EmptyOption{}
-	free_ips      i64 | EmptyOption = EmptyOption{}
+	page          u32 | EmptyOption = EmptyOption{}
+	size          u32 | EmptyOption = EmptyOption{}
+	ret_count     u32 | EmptyOption = EmptyOption{}
+	free_mru      u32 | EmptyOption = EmptyOption{}
+	free_sru      u32 | EmptyOption = EmptyOption{}
+	free_hru      u32 | EmptyOption = EmptyOption{}
+	free_ips      u32 | EmptyOption = EmptyOption{}
 	city          string
 	country       string
 	farm_name     string
 	ipv4          string
 	ipv6          string
 	domain        string
-	status 		  string
+	status        string
 	dedicated     bool | EmptyOption = EmptyOption{}
 	rentable      bool | EmptyOption = EmptyOption{}
-	rented_by     i64 | EmptyOption  = EmptyOption{}
-	available_for i64 | EmptyOption  = EmptyOption{}
-	farm_ids      []i64
+	rented_by     u32 | EmptyOption  = EmptyOption{}
+	available_for u32 | EmptyOption  = EmptyOption{}
+	farm_ids      []u32
 }
 
 // serialize NodesParams to map
@@ -96,43 +96,43 @@ pub fn (p &NodesParams) to_map() map[string]string {
 	mut m := map[string]string{}
 	match p.page {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['pages'] = p.page.str()
 		}
 	}
 	match p.size {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['size'] = p.size.str()
 		}
 	}
 	match p.ret_count {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['ret_count'] = p.ret_count.str()
 		}
 	}
 	match p.free_mru {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['free_mru'] = p.free_mru.str()
 		}
 	}
 	match p.free_sru {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['free_sru'] = p.free_sru.str()
 		}
 	}
 	match p.free_hru {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['free_hru'] = p.free_hru.str()
 		}
 	}
 	match p.free_ips {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['free_ips'] = p.free_ips.str()
 		}
 	}
@@ -171,13 +171,13 @@ pub fn (p &NodesParams) to_map() map[string]string {
 	}
 	match p.rented_by {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['rented_by'] = p.rented_by.str()
 		}
 	}
 	match p.available_for {
 		EmptyOption {}
-		i64 {
+		u32 {
 			m['available_for'] = p.available_for.str()
 		}
 	}
