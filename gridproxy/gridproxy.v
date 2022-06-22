@@ -243,7 +243,7 @@ pub fn (mut c GridProxyClient) get_twin_by_account(account_id string) ?Twin {
 	return twins[0]
 }
 
-// fetch specific twin information by account.
+// check if API server is reachable and responding.
 pub fn (mut c GridProxyClient) check_health() bool {
 	mut http_client := c.http_client.clone()
 	res := http_client.send(prefix: 'ping/') or { return false }
