@@ -20,7 +20,7 @@
   - [get_twin_by_account](#get_twin_by_account)
   - [get_twin_by_id](#get_twin_by_id)
   - [get_twins](#get_twins)
-      - [Powered by vdoc. Generated on: 22 Jun 2022 23:49:30](#powered-by-vdoc-generated-on-22-jun-2022-234930)
+      - [Powered by vdoc. Generated on: 23 Jun 2022 00:20:04](#powered-by-vdoc-generated-on-23-jun-2022-002004)
 
 ## get
 ```v
@@ -61,6 +61,8 @@ fn (mut c GridProxyClient) check_health() bool
 
 check if API server is reachable and responding.  
 
+returns: true if API server is reachable and responding, false otherwise
+
 [[Return to contents]](#Contents)
 
 ## get_contracts
@@ -69,6 +71,10 @@ fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract
 ```
 
 fetch contracts information.  
+
+* `params`: filter object to apply to the contracts
+
+returns: array of contracts information or error
 
 [[Return to contents]](#Contents)
 
@@ -79,6 +85,10 @@ fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm
 
 fetch farms information and public ips.  
 
+* `params`: filter object to apply to the farms
+
+returns: array of farms information or error
+
 [[Return to contents]](#Contents)
 
 ## get_gateway_by_id
@@ -88,6 +98,10 @@ fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCapacit
 
 fetch specific gateway information by node id.  
 
+* `node_Id`: node id
+
+returns: gateway information or error
+
 [[Return to contents]](#Contents)
 
 ## get_gateways
@@ -95,7 +109,11 @@ fetch specific gateway information by node id.
 fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node
 ```
 
-fetch gateways information and public configurations and domains
+fetch gateways information and public configurations and domains.  
+
+* `params`: filter object to apply to the gateways
+
+returns: array of gateways information or error
 
 [[Return to contents]](#Contents)
 
@@ -106,6 +124,10 @@ fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapacity
 
 fetch specific node information by node id.  
 
+* `node_id`: node id
+
+returns: node information or error
+
 [[Return to contents]](#Contents)
 
 ## get_nodes
@@ -114,6 +136,10 @@ fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node
 ```
 
 fetch nodes information and public configurations.  
+
+* `params`: filter object to apply to the nodes
+
+returns: array of nodes information or error
 
 [[Return to contents]](#Contents)
 
@@ -124,6 +150,10 @@ fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats
 
 fetch grid statistics.  
 
+* `filter`: filter object to apply to the grid statistics
+
+returns: grid statistics or error
+
 [[Return to contents]](#Contents)
 
 ## get_twin_by_account
@@ -132,6 +162,10 @@ fn (mut c GridProxyClient) get_twin_by_account(account_id string) ?Twin
 ```
 
 fetch specific twin information by account.  
+
+* `account_id`: account id
+
+returns: twin information or error
 
 [[Return to contents]](#Contents)
 
@@ -142,6 +176,10 @@ fn (mut c GridProxyClient) get_twin_by_id(twin_id u64) ?Twin
 
 fetch specific twin information by twin id.  
 
+* `twin_id`: twin id
+
+returns: twin information or error
+
 [[Return to contents]](#Contents)
 
 ## get_twins
@@ -151,6 +189,10 @@ fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin
 
 fetch twins information.  
 
+* `params`: filter object to apply to the twins
+
+returns: array of twins information or error
+
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 22 Jun 2022 23:49:30
+#### Powered by vdoc. Generated on: 23 Jun 2022 00:20:04
