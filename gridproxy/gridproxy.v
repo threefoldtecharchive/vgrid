@@ -23,6 +23,10 @@ invalid response from server (e.g. empty response) error code: 24
 */
 
 // fetch specific node information by node id.
+//
+// * `node_id`: node id
+//
+// returns: node information or error
 pub fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapacity {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
@@ -47,6 +51,10 @@ pub fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapaci
 }
 
 // fetch specific gateway information by node id.
+//
+// * `node_Id`: node id
+//
+// returns: gateway information or error
 pub fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCapacity {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
@@ -71,6 +79,10 @@ pub fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCap
 }
 
 // fetch nodes information and public configurations.
+//
+// * `params`: filter object to apply to the nodes
+//
+// returns: array of nodes information or error
 pub fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
@@ -94,7 +106,11 @@ pub fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node {
 	return nodes
 }
 
-// fetch gateways information and public configurations and domains
+// fetch gateways information and public configurations and domains.
+//
+// * `params`: filter object to apply to the gateways
+//
+// returns: array of gateways information or error
 pub fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
@@ -119,6 +135,10 @@ pub fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node {
 }
 
 // fetch grid statistics.
+//
+// * `filter`: filter object to apply to the grid statistics
+//
+// returns: grid statistics or error
 pub fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
@@ -148,6 +168,10 @@ pub fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats {
 }
 
 // fetch twins information.
+//
+// * `params`: filter object to apply to the twins
+//
+// returns: array of twins information or error
 pub fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
@@ -172,6 +196,10 @@ pub fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin {
 }
 
 // fetch contracts information.
+//
+// * `params`: filter object to apply to the contracts
+//
+// returns: array of contracts information or error
 pub fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
@@ -196,6 +224,10 @@ pub fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract 
 }
 
 // fetch farms information and public ips.
+//
+// * `params`: filter object to apply to the farms
+//
+// returns: array of farms information or error
 pub fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
@@ -220,6 +252,10 @@ pub fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm {
 }
 
 // fetch specific twin information by twin id.
+//
+// * `twin_id`: twin id
+//
+// returns: twin information or error
 pub fn (mut c GridProxyClient) get_twin_by_id(twin_id u64) ?Twin {
 	// needed to allow to use threads	
 	twins := c.get_twins(twin_id: twin_id) or {
@@ -232,6 +268,10 @@ pub fn (mut c GridProxyClient) get_twin_by_id(twin_id u64) ?Twin {
 }
 
 // fetch specific twin information by account.
+//
+// * `account_id`: account id
+//
+// returns: twin information or error
 pub fn (mut c GridProxyClient) get_twin_by_account(account_id string) ?Twin {
 	// needed to allow to use threads
 	twins := c.get_twins(account_id: account_id) or {
@@ -244,6 +284,8 @@ pub fn (mut c GridProxyClient) get_twin_by_account(account_id string) ?Twin {
 }
 
 // check if API server is reachable and responding.
+//
+// returns: true if API server is reachable and responding, false otherwise
 pub fn (mut c GridProxyClient) check_health() bool {
 	mut http_client := c.http_client.clone()
 	res := http_client.send(prefix: 'ping/') or { return false }
