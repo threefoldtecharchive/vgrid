@@ -2,7 +2,7 @@ module gridproxy
 
 import despiegk.crystallib.httpconnection
 
-pub struct GridproxyClient {
+pub struct GridProxyClient {
 pub mut:
 	http_client httpconnection.HTTPConnection
 }
@@ -17,7 +17,7 @@ pub enum TFGridNet {
 [heap]
 struct GridproxyFactory {
 mut:
-	instances map[string]&GridproxyClient
+	instances map[string]&GridProxyClient
 }
 
 fn init_factory() GridproxyFactory {
@@ -51,7 +51,7 @@ fn tfgrid_net_string(net TFGridNet) string {
 	}
 }
 
-pub fn get(net TFGridNet, use_redis_cache bool) &GridproxyClient {
+pub fn get(net TFGridNet, use_redis_cache bool) &GridProxyClient {
 	mut f := factory_get()
 	netstr := tfgrid_net_string(net)
 	if netstr !in gridproxy.factory.instances {
@@ -59,7 +59,7 @@ pub fn get(net TFGridNet, use_redis_cache bool) &GridproxyClient {
 		mut httpconn := httpconnection.new('gridproxy_$netstr', url, use_redis_cache)
 		// do the settings on the connection
 		httpconn.cache.expire_after = 7200 // make the cache timeout 2h
-		mut connection := GridproxyClient{
+		mut connection := GridProxyClient{
 			http_client: httpconn
 		}
 		f.instances[netstr] = &connection

@@ -23,7 +23,7 @@ invalid response from server (e.g. empty response) error code: 24
 */
 
 // fetch specific node information by node id.
-pub fn (mut c GridproxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapacity {
+pub fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapacity {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 
@@ -47,7 +47,7 @@ pub fn (mut c GridproxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapaci
 }
 
 // fetch specific gateway information by node id.
-pub fn (mut c GridproxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCapacity {
+pub fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCapacity {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 
@@ -71,7 +71,7 @@ pub fn (mut c GridproxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCap
 }
 
 // fetch nodes information and public configurations.
-pub fn (mut c GridproxyClient) get_nodes(params NodesFilter) ?[]Node {
+pub fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
@@ -95,7 +95,7 @@ pub fn (mut c GridproxyClient) get_nodes(params NodesFilter) ?[]Node {
 }
 
 // fetch gateways information and public configurations and domains
-pub fn (mut c GridproxyClient) get_gateways(params NodesFilter) ?[]Node {
+pub fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
@@ -119,7 +119,7 @@ pub fn (mut c GridproxyClient) get_gateways(params NodesFilter) ?[]Node {
 }
 
 // fetch grid statistics.
-pub fn (mut c GridproxyClient) get_stats(filter StatsFilter) ?GridStats {
+pub fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	mut params_map := map[string]string{}
@@ -148,7 +148,7 @@ pub fn (mut c GridproxyClient) get_stats(filter StatsFilter) ?GridStats {
 }
 
 // fetch twins information.
-pub fn (mut c GridproxyClient) get_twins(params TwinFilter) ?[]Twin {
+pub fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
@@ -172,7 +172,7 @@ pub fn (mut c GridproxyClient) get_twins(params TwinFilter) ?[]Twin {
 }
 
 // fetch contracts information.
-pub fn (mut c GridproxyClient) get_contracts(params ContractFilter) ?[]Contract {
+pub fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
@@ -196,7 +196,7 @@ pub fn (mut c GridproxyClient) get_contracts(params ContractFilter) ?[]Contract 
 }
 
 // fetch farms information and public ips.
-pub fn (mut c GridproxyClient) get_farms(params FarmFilter) ?[]Farm {
+pub fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
@@ -220,7 +220,7 @@ pub fn (mut c GridproxyClient) get_farms(params FarmFilter) ?[]Farm {
 }
 
 // fetch specific twin information by twin id.
-pub fn (mut c GridproxyClient) get_twin_by_id(twin_id u64) ?Twin {
+pub fn (mut c GridProxyClient) get_twin_by_id(twin_id u64) ?Twin {
 	// needed to allow to use threads	
 	twins := c.get_twins(twin_id: twin_id) or {
 		return error_with_code('http client error: $err.msg()', 11)
@@ -232,7 +232,7 @@ pub fn (mut c GridproxyClient) get_twin_by_id(twin_id u64) ?Twin {
 }
 
 // fetch specific twin information by account.
-pub fn (mut c GridproxyClient) get_twin_by_account(account_id string) ?Twin {
+pub fn (mut c GridProxyClient) get_twin_by_account(account_id string) ?Twin {
 	// needed to allow to use threads
 	twins := c.get_twins(account_id: account_id) or {
 		return error_with_code('http client error: $err.msg()', 11)
@@ -244,7 +244,7 @@ pub fn (mut c GridproxyClient) get_twin_by_account(account_id string) ?Twin {
 }
 
 // fetch specific twin information by account.
-pub fn (mut c GridproxyClient) check_health() bool {
+pub fn (mut c GridProxyClient) check_health() bool {
 	mut http_client := c.http_client.clone()
 	res := http_client.send(prefix: 'ping/') or { return false }
 	if !res.is_ok() {
@@ -259,7 +259,7 @@ pub fn (mut c GridproxyClient) check_health() bool {
 	return true
 }
 
-// pub fn (mut h GridproxyClient) nodes_print(nodes []Node) string {
+// pub fn (mut h GridProxyClient) nodes_print(nodes []Node) string {
 // 	mut res := []string{}
 // 	res <<"\n\nAVAILABLE NODES (MEM in GB, SSD/HDD in TB):\n-------------------------------------------\n"
 // 	for node in nodes{
