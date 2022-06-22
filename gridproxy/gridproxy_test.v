@@ -4,7 +4,7 @@ import threefoldtech.vgrid.gridproxy.model
 import time
 
 const (
-	cache = false
+	cache      = false
 	dummy_node = model.Node{
 		id: '0000129706-000001-c1e78'
 		node_id: 1
@@ -93,87 +93,87 @@ const (
 )
 
 fn test_create_gridproxy_client_qa() {
-	mut gp := get(.qa, cache)
+	mut gp := get(.qa, gridproxy.cache)
 	assert gp.check_health() == true
 }
 
 fn test_create_gridproxy_client_dev() {
-	mut gp := get(.dev, cache)
+	mut gp := get(.dev, gridproxy.cache)
 	assert gp.check_health() == true
 }
 
 fn test_create_gridproxy_client_test() {
-	mut gp := get(.test, cache)
+	mut gp := get(.test, gridproxy.cache)
 	assert gp.check_health() == true
 }
 
 fn test_create_gridproxy_client_main() {
-	mut gp := get(.main, cache)
+	mut gp := get(.main, gridproxy.cache)
 	assert gp.check_health() == true
 }
 
 fn test_get_nodes_qa() {
-	mut gp := get(.qa, cache)
+	mut gp := get(.qa, gridproxy.cache)
 	nodes := gp.get_nodes() or { panic('Failed to get nodes') }
 	assert nodes.len > 0
 }
 
 fn test_get_nodes_dev() {
-	mut gp := get(.dev, cache)
+	mut gp := get(.dev, gridproxy.cache)
 	nodes := gp.get_nodes() or { panic('Failed to get nodes') }
 	assert nodes.len > 0
 }
 
 fn test_get_nodes_test() {
-	mut gp := get(.test, cache)
+	mut gp := get(.test, gridproxy.cache)
 	nodes := gp.get_nodes() or { panic('Failed to get nodes') }
 	assert nodes.len > 0
 }
 
 fn test_get_nodes_main() {
-	mut gp := get(.main, cache)
+	mut gp := get(.main, gridproxy.cache)
 	nodes := gp.get_nodes() or { panic('Failed to get nodes') }
 	assert nodes.len > 0
 }
 
 fn test_get_gateways_qa() {
-	mut gp := get(.qa, cache)
+	mut gp := get(.qa, gridproxy.cache)
 	nodes := gp.get_gateways() or { panic('Failed to get gateways') }
 	assert nodes.len > 0
 }
 
 fn test_get_gateways_dev() {
-	mut gp := get(.dev, cache)
+	mut gp := get(.dev, gridproxy.cache)
 	nodes := gp.get_gateways() or { panic('Failed to get gateways') }
 	assert nodes.len > 0
 }
 
 fn test_get_gateways_test() {
-	mut gp := get(.test, cache)
+	mut gp := get(.test, gridproxy.cache)
 	nodes := gp.get_gateways() or { panic('Failed to get gateways') }
 	assert nodes.len > 0
 }
 
 fn test_get_gateways_main() {
-	mut gp := get(.main, cache)
+	mut gp := get(.main, gridproxy.cache)
 	nodes := gp.get_gateways() or { panic('Failed to get gateways') }
 	assert nodes.len > 0
 }
 
 fn test_get_twins_qa() {
-	mut gp := get(.qa, cache)
+	mut gp := get(.qa, gridproxy.cache)
 	twins := gp.get_twins() or { panic('Failed to get twins') }
 	assert twins.len > 0
 }
 
 fn test_get_twins_dev() {
-	mut gp := get(.dev, cache)
+	mut gp := get(.dev, gridproxy.cache)
 	twins := gp.get_twins() or { panic('Failed to get twins') }
 	assert twins.len > 0
 }
 
 fn test_get_twins_test() {
-	mut gp := get(.test, cache)
+	mut gp := get(.test, gridproxy.cache)
 	twins := gp.get_twins() or { panic('Failed to get twins') }
 	assert twins.len > 0
 }
@@ -188,43 +188,43 @@ fn test_get_twins_main() {
 }*/
 
 fn test_get_stats_qa() {
-	mut gp := get(.qa, cache)
+	mut gp := get(.qa, gridproxy.cache)
 	stats := gp.get_stats() or { panic('Failed to get stats') }
 	assert stats.nodes > 0
 }
 
 fn test_get_stats_dev() {
-	mut gp := get(.dev, cache)
+	mut gp := get(.dev, gridproxy.cache)
 	stats := gp.get_stats() or { panic('Failed to get stats') }
 	assert stats.nodes > 0
 }
 
 fn test_get_stats_test() {
-	mut gp := get(.test, cache)
+	mut gp := get(.test, gridproxy.cache)
 	stats := gp.get_stats() or { panic('Failed to get stats') }
 	assert stats.nodes > 0
 }
 
 fn test_get_stats_main() {
-	mut gp := get(.test, cache)
+	mut gp := get(.test, gridproxy.cache)
 	stats := gp.get_stats() or { panic('Failed to get stats') }
 	assert stats.nodes > 0
 }
 
 fn test_get_contracts_qa() {
-	mut gp := get(.qa, cache)
+	mut gp := get(.qa, gridproxy.cache)
 	contracts := gp.get_contracts() or { panic('Failed to get contracts') }
 	assert contracts.len > 0
 }
 
 fn test_get_contracts_dev() {
-	mut gp := get(.dev, cache)
+	mut gp := get(.dev, gridproxy.cache)
 	contracts := gp.get_contracts() or { panic('Failed to get contracts') }
 	assert contracts.len > 0
 }
 
 fn test_get_contracts_test() {
-	mut gp := get(.test, cache)
+	mut gp := get(.test, gridproxy.cache)
 	contracts := gp.get_contracts() or { panic('Failed to get contracts') }
 	assert contracts.len > 0
 }
@@ -237,25 +237,25 @@ fn test_get_contracts_main() {
 }*/
 
 fn test_get_farms_qa() {
-	mut gp := get(.qa, cache)
+	mut gp := get(.qa, gridproxy.cache)
 	farms := gp.get_farms() or { panic('Failed to get farms') }
 	assert farms.len > 0
 }
 
 fn test_get_farms_dev() {
-	mut gp := get(.dev, cache)
+	mut gp := get(.dev, gridproxy.cache)
 	farms := gp.get_farms() or { panic('Failed to get farms') }
 	assert farms.len > 0
 }
 
 fn test_get_farms_test() {
-	mut gp := get(.test, cache)
+	mut gp := get(.test, gridproxy.cache)
 	farms := gp.get_farms() or { panic('Failed to get farms') }
 	assert farms.len > 0
 }
 
 fn test_get_farms_main() {
-	mut gp := get(.main, cache)
+	mut gp := get(.main, gridproxy.cache)
 	farms := gp.get_farms() or { panic('Failed to get farms') }
 	assert farms.len > 0
 }
