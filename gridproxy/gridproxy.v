@@ -1,102 +1,119 @@
 module gridproxy
 
 import json
-import threefoldtech.vgrid.gridproxy.model { GridStats, Node, NodesParams, StatsParams, Twin, TwinParams }
+import threefoldtech.vgrid.gridproxy.model { Contract, ContractFilter, Farm, FarmFilter, GridStats, Node, NodeWithNestedCapacity, NodesFilter, StatsFilter, Twin, TwinFilter }
 
 /*
-struct ErrorResponse {
-	Error
-	code int = 0
+all errors returned by the gridproxy API or the client are wrapped in a standard `Error` object with two fields.
+{
+	msg string
+	code int // could be API call error code or client error code
 }
 
-pub fn (err ErrorResponse) msg() string {
-	if err.code != 0 {
-		return 'HTTP error response: $err.msg'
-	}
-	return 'Client error: $err.msg'
-}*/
+`code` is an error code that can be used to identify the error.
+in API call errors, `code` represents the HTTP status code. (100..599)
 
-pub fn (mut c GridproxyClient) get_node_by_id(node_id int) ?Node {
+Client errors codes are represented by numbers in the range of 1..99
+currently, the following client error codes are used:
+id not found error code: 4
+json parsing error code: 10
+http client error code: 11
+invalid response from server (e.g. empty response) error code: 24
+*/
+
+pub fn (mut c GridproxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapacity {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 
-	res := http_client.send(prefix: 'nodes/', id: '$node_id') or { return err }
+	res := http_client.send(prefix: 'nodes/', id: '$node_id') or {
+		return error_with_code('http client error: $err.msg()', 11)
+	}
 
 	if !res.is_ok() {
-		return error(res.data)
+		return error_with_code(res.data, res.code)
 	}
 
 	if res.data == '' {
-		return error('empty response')
+		return error_with_code('empty response', 24)
 	}
 
-	node := json.decode(model.Node, res.data) or {
-		return error('error to get jsonstr for node_info, json decode: node: $node_id')
+	node := json.decode(NodeWithNestedCapacity, res.data) or {
+		return error_with_code('error to get jsonstr for node data, json decode: node id: $node_id, data: $res.data',
+			10)
 	}
 	return node
 }
 
-pub fn (mut c GridproxyClient) get_gateway_by_id(node_id int) ?Node {
+pub fn (mut c GridproxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCapacity {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 
-	res := http_client.send(prefix: 'nodes/', id: '$node_id') or { return err }
+	res := http_client.send(prefix: 'gateways/', id: '$node_id') or {
+		return error_with_code('http client error: $err.msg()', 11)
+	}
 
 	if !res.is_ok() {
-		return error(res.data)
+		return error_with_code(res.data, res.code)
 	}
 
 	if res.data == '' {
-		return error('empty response')
+		return error_with_code('empty response', 24)
 	}
 
-	node := json.decode(model.Node, res.data) or {
-		return error('error to get jsonstr for node_info, json decode: node: $node_id')
+	node := json.decode(NodeWithNestedCapacity, res.data) or {
+		return error_with_code('error to get jsonstr for gateway data, json decode: gateway id: $node_id, data: $res.data',
+			10)
 	}
 	return node
 }
 
-pub fn (mut c GridproxyClient) get_nodes(params NodesParams) ?[]Node {
+pub fn (mut c GridproxyClient) get_nodes(params NodesFilter) ?[]Node {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
-	res := http_client.send(prefix: 'nodes/', params: params_map) or { return err }
+	res := http_client.send(prefix: 'nodes/', params: params_map) or {
+		return error_with_code('http client error: $err.msg()', 11)
+	}
 
 	if !res.is_ok() {
-		return error(res.data)
+		return error_with_code(res.data, res.code)
 	}
 
 	if res.data == '' {
-		return error('empty response')
+		return error_with_code('empty response', 24)
 	}
 
-	nodes := json.decode([]model.Node, res.data) or {
-		return error('error to get jsonstr for nodes, data: $res.data, params: $params_map')
+	nodes := json.decode([]Node, res.data) or {
+		return error_with_code('error to get jsonstr for node list data, json decode: node filter: $params_map, data: $res.data',
+			10)
 	}
 	return nodes
 }
 
-pub fn (mut c GridproxyClient) get_gateways(params NodesParams) ?[]Node {
+pub fn (mut c GridproxyClient) get_gateways(params NodesFilter) ?[]Node {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
-	res := http_client.send(prefix: 'gateways/', params: params_map) or { return err }
+	res := http_client.send(prefix: 'gateways/', params: params_map) or {
+		return error_with_code('http client error: $err.msg()', 11)
+	}
 
 	if !res.is_ok() {
-		return error(res.data)
+		return error_with_code(res.data, res.code)
 	}
 
 	if res.data == '' {
-		return error('empty response')
+		return error_with_code('empty response', 24)
 	}
 
-	nodes := json.decode([]model.Node, res.data) or {
-		return error('error to get jsonstr for nodes, data: $res.data, params: $params_map')
+	nodes := json.decode([]Node, res.data) or {
+		return error_with_code('error to get jsonstr for gateways list data, json decode: gateway filter: $params_map, data: $res.data',
+			10)
 	}
 	return nodes
 }
 
-pub fn (mut c GridproxyClient) get_stats(filter StatsParams) ?GridStats {
+pub fn (mut c GridproxyClient) get_stats(filter StatsFilter) ?GridStats {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	mut params_map := map[string]string{}
@@ -105,86 +122,112 @@ pub fn (mut c GridproxyClient) get_stats(filter StatsParams) ?GridStats {
 		.online { 'up' }
 	}
 
-	res := http_client.send(prefix: 'stats/', params: params_map) or { return err }
+	res := http_client.send(prefix: 'stats/', params: params_map) or {
+		return error_with_code('http client error: $err.msg()', 11)
+	}
 
 	if !res.is_ok() {
-		return error(res.data)
+		return error_with_code(res.data, res.code)
 	}
 
 	if res.data == '' {
-		return error('empty response')
+		return error_with_code('empty response', 24)
 	}
 
-	stats := json.decode(model.GridStats, res.data) or {
-		return error('error to get jsonstr for stats, data: $res.data, params: $params_map')
+	stats := json.decode(GridStats, res.data) or {
+		return error_with_code('error to get jsonstr for grid stats data, json decode: stats filter: $params_map, data: $res.data',
+			10)
 	}
 	return stats
 }
 
-pub fn (mut c GridproxyClient) get_twins(params TwinParams) ?[]Twin {
+pub fn (mut c GridproxyClient) get_twins(params TwinFilter) ?[]Twin {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
-	res := http_client.send(prefix: 'twins/', params: params_map) or { return err }
+	res := http_client.send(prefix: 'twins/', params: params_map) or {
+		return error_with_code('http client error: $err.msg()', 11)
+	}
 
 	if !res.is_ok() {
-		return error(res.data)
+		return error_with_code(res.data, res.code)
 	}
 
 	if res.data == '' {
-		return error('empty response')
+		return error_with_code('empty response', 24)
 	}
 
-	twins := json.decode([]model.Twin, res.data) or {
-		return error('error to get jsonstr for twins, data: $res.data, params: $params_map')
+	twins := json.decode([]Twin, res.data) or {
+		return error_with_code('error to get jsonstr for twin list data, json decode: twin filter: $params_map, data: $res.data',
+			10)
 	}
 	return twins
 }
 
-pub fn (mut c GridproxyClient) get_twin_by_id(twin_id int) ?Twin {
+pub fn (mut c GridproxyClient) get_contracts(params ContractFilter) ?[]Contract {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
-	params_map := {
-		'twin_id': '$twin_id'
+	params_map := params.to_map()
+	res := http_client.send(prefix: 'contracts/', params: params_map) or {
+		return error_with_code('http client error: $err.msg()', 11)
 	}
-	res := http_client.send(prefix: 'twins/', params: params_map) or { return err }
+
 	if !res.is_ok() {
-		return error(res.data)
+		return error_with_code(res.data, res.code)
 	}
 
 	if res.data == '' {
-		return error('empty response')
+		return error_with_code('empty response', 24)
 	}
 
-	twins := json.decode([]model.Twin, res.data) or {
-		return error('error to get jsonstr for twin, data: $res.data, params: $params_map')
+	contracts := json.decode([]Contract, res.data) or {
+		return error_with_code('error to get jsonstr for contract list data, json decode: contract filter: $params_map, data: $res.data',
+			10)
+	}
+	return contracts
+}
+
+pub fn (mut c GridproxyClient) get_farms(params FarmFilter) ?[]Farm {
+	// needed to allow to use threads
+	mut http_client := c.http_client.clone()
+	params_map := params.to_map()
+	res := http_client.send(prefix: 'farms/', params: params_map) or {
+		return error_with_code('http client error: $err.msg()', 11)
+	}
+
+	if !res.is_ok() {
+		return error_with_code(res.data, res.code)
+	}
+
+	if res.data == '' {
+		return error_with_code('empty response', 24)
+	}
+
+	farms := json.decode([]Farm, res.data) or {
+		return error_with_code('error to get jsonstr for farm list data, json decode: farm filter: $params_map, data: $res.data',
+			10)
+	}
+	return farms
+}
+
+pub fn (mut c GridproxyClient) get_twin_by_id(twin_id u64) ?Twin {
+	// needed to allow to use threads	
+	twins := c.get_twins(twin_id: twin_id) or {
+		return error_with_code('http client error: $err.msg()', 11)
 	}
 	if twins.len == 0 {
-		return error('no twin found for id: $twin_id')
+		return error_with_code('no twin found for id: $twin_id', 4)
 	}
 	return twins[0]
 }
 
 pub fn (mut c GridproxyClient) get_twin_by_account(account_id string) ?Twin {
 	// needed to allow to use threads
-	mut http_client := c.http_client.clone()
-	params_map := {
-		'account_id': '$account_id'
-	}
-	res := http_client.send(prefix: 'twins/', params: params_map) or { return err }
-	if !res.is_ok() {
-		return error(res.data)
-	}
-
-	if res.data == '' {
-		return error('empty response')
-	}
-
-	twins := json.decode([]model.Twin, res.data) or {
-		return error('error to get jsonstr for twin, data: $res.data, params: $params_map')
+	twins := c.get_twins(account_id: account_id) or {
+		return error_with_code('http client error: $err.msg()', 11)
 	}
 	if twins.len == 0 {
-		return error('no twin found for account_id: $account_id')
+		return error_with_code('no twin found for account_id: $account_id', 4)
 	}
 	return twins[0]
 }
