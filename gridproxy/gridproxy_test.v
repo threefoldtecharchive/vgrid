@@ -1,6 +1,5 @@
 module gridproxy
-
-import gridproxy.model
+import model
 import time
 
 const (

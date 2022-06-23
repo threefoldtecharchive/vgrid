@@ -2,7 +2,7 @@ module gridproxy
 
 // client library for threefold gridproxy API
 import json
-import gridproxy.model { Contract, ContractFilter, Farm, FarmFilter, GridStats, Node, NodeWithNestedCapacity, NodesFilter, StatsFilter, Twin, TwinFilter }
+import model { Contract, ContractFilter, Farm, FarmFilter, GridStats, Node, NodeWithNestedCapacity, NodesFilter, StatsFilter, Twin, TwinFilter }
 
 /*
 all errors returned by the gridproxy API or the client are wrapped in a standard `Error` object with two fields.
