@@ -8,9 +8,4 @@ v install --git https://github.com/threefoldtech/vgrid
 
 ## GridProxy Client
 
-to run the basic tests
-```sh
-v -stats test ./gridproxy/
-```
-
-
+see the GridProxy Client docs [here](gridproxy/README.md)
