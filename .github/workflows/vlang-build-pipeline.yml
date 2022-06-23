@@ -22,7 +22,6 @@ jobs:
     - name: Set up V version latest
       uses: vlang/setup-v@v1
       with:
-        check-latest: true
         stable: true
     - name: Install dependencies
       run: v install https://github.com/freeflowuniverse/crystallib
