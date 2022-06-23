@@ -1,6 +1,6 @@
 module gridproxy
 
-import threefoldtech.vgrid.gridproxy.model
+import gridproxy.model
 import time
 
 const (
