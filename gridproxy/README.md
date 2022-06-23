@@ -59,7 +59,7 @@ vgrid
 You would require the following tools to develop and run the project:
 
 * V language
-* despiegk.crystallib v module
+* freeflowuniverse.crystallib v module
   ```
   v install https://github.com/freeflowuniverse/crystallib
   ```
@@ -133,7 +133,7 @@ If you want to use the client, you need to import it in your code.
 * filtering:
   ```
     // getting only dedicated farms
-    farms_dedicated := gp_client.get_farms_by_name(dedicated: true)?
+    farms_dedicated := gp_client.get_farms(dedicated: true)?
     // getting only farms with at least one free ip
     farms_with_free_ips := gp_client.get_farms(free_ips: u64(1))?
     // pagination options:
