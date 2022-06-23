@@ -1,6 +1,6 @@
 module gridproxy
 
-import despiegk.crystallib.httpconnection
+import freeflowuniverse.crystallib.httpconnection
 
 pub struct GridProxyClient {
 pub mut:
