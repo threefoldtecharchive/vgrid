@@ -2,7 +2,7 @@ module gridproxy
 
 // client library for threefold gridproxy API
 import json
-import model { Contract, ContractFilter, Farm, FarmFilter, GridStats, Node, NodeWithNestedCapacity, NodesFilter, StatsFilter, Twin, TwinFilter }
+import threefoldtech.vgrid.gridproxy.model { Contract, ContractFilter, Farm, FarmFilter, GridStats, Node, NodeWithNestedCapacity, NodesFilter, StatsFilter, Twin, TwinFilter }
 
 /*
 all errors returned by the gridproxy API or the client are wrapped in a standard `Error` object with two fields.
@@ -43,7 +43,7 @@ pub fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapaci
 		return error_with_code('empty response', 24)
 	}
 
-	node := json.decode(NodeWithNestedCapacity, res.data) or {
+	node := json.decode(model.NodeWithNestedCapacity, res.data) or {
 		return error_with_code('error to get jsonstr for node data, json decode: node id: $node_id, data: $res.data',
 			10)
 	}
@@ -71,7 +71,7 @@ pub fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCap
 		return error_with_code('empty response', 24)
 	}
 
-	node := json.decode(NodeWithNestedCapacity, res.data) or {
+	node := json.decode(model.NodeWithNestedCapacity, res.data) or {
 		return error_with_code('error to get jsonstr for gateway data, json decode: gateway id: $node_id, data: $res.data',
 			10)
 	}
@@ -99,7 +99,7 @@ pub fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node {
 		return error_with_code('empty response', 24)
 	}
 
-	nodes := json.decode([]Node, res.data) or {
+	nodes := json.decode([]model.Node, res.data) or {
 		return error_with_code('error to get jsonstr for node list data, json decode: node filter: $params_map, data: $res.data',
 			10)
 	}
@@ -127,7 +127,7 @@ pub fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node {
 		return error_with_code('empty response', 24)
 	}
 
-	nodes := json.decode([]Node, res.data) or {
+	nodes := json.decode([]model.Node, res.data) or {
 		return error_with_code('error to get jsonstr for gateways list data, json decode: gateway filter: $params_map, data: $res.data',
 			10)
 	}
@@ -160,7 +160,7 @@ pub fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats {
 		return error_with_code('empty response', 24)
 	}
 
-	stats := json.decode(GridStats, res.data) or {
+	stats := json.decode(model.GridStats, res.data) or {
 		return error_with_code('error to get jsonstr for grid stats data, json decode: stats filter: $params_map, data: $res.data',
 			10)
 	}
@@ -188,7 +188,7 @@ pub fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin {
 		return error_with_code('empty response', 24)
 	}
 
-	twins := json.decode([]Twin, res.data) or {
+	twins := json.decode([]model.Twin, res.data) or {
 		return error_with_code('error to get jsonstr for twin list data, json decode: twin filter: $params_map, data: $res.data',
 			10)
 	}
@@ -216,7 +216,7 @@ pub fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract 
 		return error_with_code('empty response', 24)
 	}
 
-	contracts := json.decode([]Contract, res.data) or {
+	contracts := json.decode([]model.Contract, res.data) or {
 		return error_with_code('error to get jsonstr for contract list data, json decode: contract filter: $params_map, data: $res.data',
 			10)
 	}
@@ -244,7 +244,7 @@ pub fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm {
 		return error_with_code('empty response', 24)
 	}
 
-	farms := json.decode([]Farm, res.data) or {
+	farms := json.decode([]model.Farm, res.data) or {
 		return error_with_code('error to get jsonstr for farm list data, json decode: farm filter: $params_map, data: $res.data',
 			10)
 	}
