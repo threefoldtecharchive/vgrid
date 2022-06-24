@@ -20,7 +20,7 @@
   - [get_twin_by_account](#get_twin_by_account)
   - [get_twin_by_id](#get_twin_by_id)
   - [get_twins](#get_twins)
-      - [Powered by vdoc. Generated on: 23 Jun 2022 00:20:04](#powered-by-vdoc-generated-on-23-jun-2022-002004)
+      - [Powered by vdoc. Generated on: 24 Jun 2022 19:39:46](#powered-by-vdoc-generated-on-24-jun-2022-193946)
 
 ## get
 ```v
@@ -61,7 +61,7 @@ fn (mut c GridProxyClient) check_health() bool
 
 check if API server is reachable and responding.  
 
-returns: true if API server is reachable and responding, false otherwise
+returns: bool, `true` if API server is reachable and responding, `false` otherwise
 
 [[Return to contents]](#Contents)
 
@@ -70,11 +70,22 @@ returns: true if API server is reachable and responding, false otherwise
 fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract
 ```
 
-fetch contracts information.  
+fetch all contracts information with pagination.  
 
-* `params`: filter object to apply to the contracts
+* `page` (u64): Page number. [optional].  
+* `size` (u64): Max result per page. [optional].  
+* `ret_count` (string): Set farms' count on headers based on filter. [optional].  
+* `contract_id` (u64): contract id. [optional].  
+* `twin_id` (u64): twin id. [optional].  
+* `node_id` (u64): node id which contract is deployed on in case of ('rent' or 'node' contracts). [optional].  
+* `name` (string): contract name in case of 'name' contracts. [optional].  
+* `type` (string): contract type 'node', 'name', or 'rent'. [optional].  
+* `state` (string): contract state 'Created', or 'Deleted'. [optional].  
+* `deployment_data` (string): contract deployment data in case of 'node' contracts. [optional].  
+* `deployment_hash` (string): contract deployment hash in case of 'node' contracts. [optional].  
+* `number_of_public_ips` (u64): Min number of public ips in the 'node' contract. [optional].  
 
-returns: array of contracts information or error
+* returns: `[]Contract` or `Error`.  
 
 [[Return to contents]](#Contents)
 
@@ -85,22 +96,35 @@ fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm
 
 fetch farms information and public ips.  
 
-* `params`: filter object to apply to the farms
+* `page` (u64): Page number. [optional].  
+* `size` (u64): Max result per page. [optional].  
+* `ret_count` (string): Set farms' count on headers based on filter. [optional].  
+* `free_ips` (u64): Min number of free ips in the farm. [optional].  
+* `total_ips` (u64): Min number of total ips in the farm. [optional].  
+* `pricing_policy_id` (u64): Pricing policy id. [optional].  
+* `version` (u64): farm version. [optional].  
+* `farm_id` (u64): farm id. [optional].  
+* `twin_id` (u64): twin id associated with the farm. [optional].  
+* `name` (string): farm name. [optional].  
+* `name_contains` (string): farm name contains. [optional].  
+* `certification_type` (string): certificate type DIY or Certified. [optional].  
+* `dedicated` (bool): farm is dedicated. [optional].  
+* `stellar_address` (string): farm stellar_address. [optional].  
 
-returns: array of farms information or error
+returns: `[]Farm` or `Error`.  
 
 [[Return to contents]](#Contents)
 
 ## get_gateway_by_id
 ```v
-fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?NodeWithNestedCapacity
+fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?Node
 ```
 
 fetch specific gateway information by node id.  
 
-* `node_Id`: node id
+* `node_id` (u64): node id.  
 
-returns: gateway information or error
+returns: `Node` or `Error`.  
 
 [[Return to contents]](#Contents)
 
@@ -109,24 +133,42 @@ returns: gateway information or error
 fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node
 ```
 
-fetch gateways information and public configurations and domains.  
+fetch all gateways information and public configurations and domains with pagination.  
 
-* `params`: filter object to apply to the gateways
+* `page` (u64): Page number. [optional].  
+* `size` (u64): Max result per page. [optional].  
+* `ret_count` (u64): Set nodes' count on headers based on filter. [optional].  
+* `free_mru` (u64): Min free reservable mru in bytes. [optional].  
+* `free_hru` (u64): Min free reservable hru in bytes. [optional].  
+* `free_sru` (u64): Min free reservable sru in bytes. [optional].  
+* `free_ips` (u64): Min number of free ips in the farm of the node. [optional].  
+* `status` (string): Node status filter, set to 'up' to get online nodes only.. [optional].  
+* `city` (string): Node city filter. [optional].  
+* `country` (string): Node country filter. [optional].  
+* `farm_name` (string): Get nodes for specific farm. [optional].  
+* `ipv4` (string): Set to true to filter nodes with ipv4. [optional].  
+* `ipv6` (string): Set to true to filter nodes with ipv6. [optional].  
+* `domain` (string): Set to true to filter nodes with domain. [optional].  
+* `dedicated` (bool): Set to true to get the dedicated nodes only. [optional].  
+* `rentable` (bool): Set to true to filter the available nodes for renting. [optional].  
+* `rented_by` (u64): rented by twin id. [optional].  
+* `available_for` (u64): available for twin id. [optional].  
+* `farm_ids` ([]u64): List of farm ids. [optional].  
 
-returns: array of gateways information or error
+returns: `[]Node` or `Error`.  
 
 [[Return to contents]](#Contents)
 
 ## get_node_by_id
 ```v
-fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?NodeWithNestedCapacity
+fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?Node
 ```
 
 fetch specific node information by node id.  
 
-* `node_id`: node id
+* `node_id` (u64): node id.  
 
-returns: node information or error
+returns: `Node` or `Error`.  
 
 [[Return to contents]](#Contents)
 
@@ -135,11 +177,29 @@ returns: node information or error
 fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node
 ```
 
-fetch nodes information and public configurations.  
+fetch all nodes information and public configurations with pagination.  
 
-* `params`: filter object to apply to the nodes
+* `page` (u64): Page number. [optional].  
+* `size` (u64): Max result per page. [optional].  
+* `ret_count` (u64): Set nodes' count on headers based on filter. [optional].  
+* `free_mru` (u64): Min free reservable mru in bytes. [optional].  
+* `free_hru` (u64): Min free reservable hru in bytes. [optional].  
+* `free_sru` (u64): Min free reservable sru in bytes. [optional].  
+* `free_ips` (u64): Min number of free ips in the farm of the node. [optional].  
+* `status` (string): Node status filter, set to 'up' to get online nodes only. [optional].  
+* `city` (string): Node city filter. [optional].  
+* `country` (string): Node country filter. [optional].  
+* `farm_name` (string): Get nodes for specific farm. [optional].  
+* `ipv4` (string): Set to true to filter nodes with ipv4. [optional].  
+* `ipv6` (string): Set to true to filter nodes with ipv6. [optional].  
+* `domain` (string): Set to true to filter nodes with domain. [optional].  
+* `dedicated` (bool): Set to true to get the dedicated nodes only. [optional].  
+* `rentable` (bool): Set to true to filter the available nodes for renting. [optional].  
+* `rented_by` (u64): rented by twin id. [optional].  
+* `available_for` (u64): available for twin id. [optional].  
+* `farm_ids` ([]u64): List of farm ids. [optional].  
 
-returns: array of nodes information or error
+returns: `[]Node` or `Error`.  
 
 [[Return to contents]](#Contents)
 
@@ -148,11 +208,11 @@ returns: array of nodes information or error
 fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats
 ```
 
-fetch grid statistics.  
+fetch statistics about the grid.  
 
-* `filter`: filter object to apply to the grid statistics
+* `status` (string): Node status filter, set to 'up' to get online nodes only.. [optional].  
 
-returns: grid statistics or error
+returns: `GridStats` or `Error`.  
 
 [[Return to contents]](#Contents)
 
@@ -163,9 +223,9 @@ fn (mut c GridProxyClient) get_twin_by_account(account_id string) ?Twin
 
 fetch specific twin information by account.  
 
-* `account_id`: account id
+* `account_id`: account id.  
 
-returns: twin information or error
+returns: `Twin` or `Error`.  
 
 [[Return to contents]](#Contents)
 
@@ -176,9 +236,9 @@ fn (mut c GridProxyClient) get_twin_by_id(twin_id u64) ?Twin
 
 fetch specific twin information by twin id.  
 
-* `twin_id`: twin id
+* `twin_id`: twin id.  
 
-returns: twin information or error
+returns: `Twin` or `Error`.  
 
 [[Return to contents]](#Contents)
 
@@ -187,12 +247,16 @@ returns: twin information or error
 fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin
 ```
 
-fetch twins information.  
+fetch all twins information with pagaination.  
 
-* `params`: filter object to apply to the twins
+* `page` (u64): Page number. [optional].  
+* `size` (u64): Max result per page. [optional].  
+* `ret_count` (string): Set farms' count on headers based on filter. [optional].  
+* `twin_id` (u64): twin id. [optional].  
+* `account_id` (string): account address. [optional].  
 
-returns: array of twins information or error
+returns: `[]Twin` or `Error`.  
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 23 Jun 2022 00:20:04
+#### Powered by vdoc. Generated on: 24 Jun 2022 19:39:46

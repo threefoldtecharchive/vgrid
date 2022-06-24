@@ -29,10 +29,10 @@ pub:
 	ipv6   string
 }
 
-// this is ugly, but it works. we need two models for `Node` and reimplemnt the same fields and methods expcept for capacity srtucture
+// this is ugly, but it works. we need two models for `Node` and reimplemnt the same fields expcept for capacity srtucture
 // it's a hack to make the json parser work as the gridproxy API have some inconsistencies
 // see for more context: https://github.com/threefoldtech/tfgridclient_proxy/issues/164
-pub struct Node {
+pub struct Node_ {
 pub:
 	id                string
 	node_id           u64           [json: nodeId]
@@ -54,7 +54,7 @@ pub:
 	rented_by_twin_id u64           [json: rentedByTwinId]
 }
 
-pub struct NodeWithNestedCapacity {
+pub struct Node {
 pub:
 	id                string
 	node_id           u64          [json: nodeId]
@@ -84,20 +84,36 @@ fn calc_available_resources(total_resources NodeResources, used_resources NodeRe
 	}
 }
 
-pub fn (n &NodeWithNestedCapacity) calc_available_resources() NodeResources {
+pub fn (n &Node) calc_available_resources() NodeResources {
 	total_resources := n.capacity.total_resources
 	used_resources := n.capacity.used_resources
 	return calc_available_resources(total_resources, used_resources)
 }
 
-pub fn (n &Node) calc_available_resources() NodeResources {
-	total_resources := n.total_resources
-	used_resources := n.used_resources
-	return calc_available_resources(total_resources, used_resources)
-}
-
-pub fn (n &NodeWithNestedCapacity) is_online() bool {
-	return n.status == 'up'
+// enable the client to have one representation of the node model
+fn (n &Node_) with_nested_capacity() Node {
+	return Node{
+		id: n.id
+		node_id: n.node_id
+		farm_id: n.farm_id
+		twin_id: n.twin_id
+		grid_version: n.grid_version
+		uptime: n.uptime
+		created: n.created
+		farming_policy_id: n.farming_policy_id
+		updated_at: n.updated_at
+		capacity: NodeCapacity{
+			total_resources: n.total_resources
+			used_resources: n.used_resources
+		}
+		location: n.location
+		public_config: n.public_config
+		certification: n.certification
+		status: n.status
+		dedicated: n.dedicated
+		rent_contract_id: n.rent_contract_id
+		rented_by_twin_id: n.rented_by_twin_id
+	}
 }
 
 pub fn (n &Node) is_online() bool {

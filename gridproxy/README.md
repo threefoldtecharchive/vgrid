@@ -60,40 +60,41 @@ You would require the following tools to develop and run the project:
 
 * V language
 * freeflowuniverse.crystallib v module
-  ```
+  ```sh
   v install https://github.com/freeflowuniverse/crystallib
   ```
+  ```sh
 * Redis-server unless you are set the caching option to false
   * see [here](https://redis.io/docs/getting-started/installation/install-redis-on-linux/) for redis-server installation instructions
   * start the redis-server and configure it to connect via unixsocket
-  ```
+  ```sh
   redis-server --unixsocket /tmp/redis-default.sock --unixsocketperm 700 --port 0 --daemonize yes
   ```
 
 ### Installation
 
 * either clone the repository inside the $HOME/.vmodule directory
-  ```
+  ```sh
   git clone https://github.com/threefoldtech/vgrid.git
   ```
   
 * or use the `v install` command to install the module
-  ```
+  ```sh
   v install --once -v --git https://github.com/threefoldtech/vgrid
   ```
 
 ## Development
 We assume that you runs the commands in the project root directory.
 * You don't need to worry about formatting your code or setting style guidelines. v fmt takes care of that
-  ```
+  ```sh
   v fmt -w ./gridproxy/
   ```
 * run the tests
-  ```
+  ```sh
   v -stats test ./gridproxy/ 
   ```
 * generate the documentation of gridproxy modules
-  ```
+  ```sh
   v doc -m ./gridproxy -f md -o ./gridproxy/docs
   ```
 
@@ -102,56 +103,57 @@ We assume that you runs the commands in the project root directory.
 If you want to use the client, you need to import it in your code.
 
 * import the client:
-  ```
-    import threefoldtech.vgrid.gridproxy
+  ```v
+  import threefoldtech.vgrid.gridproxy
   ```
 
 * create a client:
-  ```
-   // create a client for the testnet, with API cache disabled
-   // you can pass true as second arg to enable cache
-    mut gp_client := gridproxy.get(.test, false)
+  ```v
+  // create a client for the testnet, with API cache disabled
+  // you can pass true as second arg to enable cache
+  mut gp_client := gridproxy.get(.test, false)
   ```
 
 * use the client to interact with the gridproxy API:
-  ```
-    // get farm list
-    farms := gp_client.get_farms()? // you should handle any possible errors in your code
-    // get gateway list
-    gateways := gp_client.get_gateways()?
-    // get node list
-    nodes := gp_client.get_nodes()?
-    // get contract list
-    contracts := gp_client.get_contracts()?
-    // get grid stats
-    stats := gp_client.get_stats()?
-    // get twins
-    twins := gp_client.get_twins()?
+  ```v
+  // get farm list
+  farms := gp_client.get_farms()? // you should handle any possible errors in your code
+  // get gateway list
+  gateways := gp_client.get_gateways()?
+  // get node list
+  nodes := gp_client.get_nodes()?
+  // get contract list
+  contracts := gp_client.get_contracts()?
+  // get grid stats
+  stats := gp_client.get_stats()?
+  // get twins
+  twins := gp_client.get_twins()?
   ```
   for all available methods on the client, see [GridProxy API client modules doc](./docs/)
 
 * filtering:
+  ```v
+  // getting only dedicated farms
+  farms_dedicated := gp_client.get_farms(dedicated: true)?
+  // getting only farms with at least one free ip
+  farms_with_free_ips := gp_client.get_farms(free_ips: u64(1))?
+  // pagination options:
+  // get first page of farms
+  farms_first_page := gp_client.get_farms(page: u64(1))?
+  // you can mix any filters and pagination options
+  farms_first_page_dedicated := gp_client.get_farms(page: u64(1), dedicated: true)?
+  // access the field of first farm in the list
+  // the API could return an empty list if no farm is found
+  // you should handle this case in your code
+  if farms_first_page.len > 0 {
+    println(farms_first_page[0].name)
+  }
   ```
-    // getting only dedicated farms
-    farms_dedicated := gp_client.get_farms(dedicated: true)?
-    // getting only farms with at least one free ip
-    farms_with_free_ips := gp_client.get_farms(free_ips: u64(1))?
-    // pagination options:
-    // get first page of farms
-    farms_first_page := gp_client.get_farms(page: u64(1))?
-    // you can mix any filters and pagination options
-    farms_first_page_dedicated := gp_client.get_farms(page: u64(1), dedicated: true)?
-    // access the field of first farm in the list
-    // the API could return an empty list if no farm is found
-    // you should handle this case in your code
-    if farms_first_page.len > 0 {
-      println(farms_first_page[0].name)
-    }
 
   for all available filters, see [GridProxy API client modules doc](./docs/)
 
 * helper methods:
-  ```
+  ```v
   node := nodes[0]
   node.updated_at // 1655940222
   node.created // 1634637306

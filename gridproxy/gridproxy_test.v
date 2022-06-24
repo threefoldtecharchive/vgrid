@@ -15,51 +15,12 @@ const (
 		created: model.UnixTime(1654848126) // GMT: 2022-06-10 08:02:06
 		farming_policy_id: 1
 		updated_at: model.UnixTime(1654848132) // GMT: 2022-06-10 08:02:12
-		total_resources: model.NodeResources{
-			cru: 4
-			mru: model.ByteUnit(5178437632) // 5178437632 bytes = 5178.437632 megabytes = 5.2 gigabytes = 0.005178437632 terabytes
-			sru: model.ByteUnit(1610612736000) // 1610612736000 bytes = 1610612.736000 megabytes = 1610.612736 gigabytes = 16.1 terabytes
-			hru: model.ByteUnit(1073741824000) // 1073741824000 bytes = 1073741.824 megabytes = 1073.741824 gigabytes = 10.7 terabytes
-		}
-		used_resources: model.NodeResources{
-			cru: 0
-			mru: model.ByteUnit(0)
-			sru: model.ByteUnit(0)
-			hru: model.ByteUnit(0)
-		}
-		location: model.NodeLocation{
-			country: 'Belgium'
-			city: 'Lochristi'
-		}
-		public_config: model.PublicConfig{
-			domain: ''
-			gw4: ''
-			gw6: ''
-			ipv4: ''
-			ipv6: ''
-		}
-		certification: 'Diy'
-		status: 'down'
-		dedicated: false
-		rent_contract_id: 0
-		rented_by_twin_id: 0
-	}
-	dummy_node_with_nested_capacity = model.NodeWithNestedCapacity{
-		id: '0000129706-000001-c1e78'
-		node_id: 1
-		farm_id: 2
-		twin_id: 8
-		grid_version: 3
-		uptime: model.SecondUnit(86400) // 86400 seconds = 1440 minutes = 24 hours = 1 day
-		created: model.UnixTime(1654848126) // GMT: 2022-06-10 08:02:06
-		farming_policy_id: 1
-		updated_at: model.UnixTime(1654848132) // GMT: 2022-06-10 08:02:12
 		capacity: model.NodeCapacity{
 			total_resources: model.NodeResources{
 				cru: 4
-				mru: model.ByteUnit(5178437632)
-				sru: model.ByteUnit(1610612736000)
-				hru: model.ByteUnit(1073741824000)
+				mru: model.ByteUnit(5178437632) // 5178437632 bytes = 5178.437632 megabytes = 5.2 gigabytes = 0.005178437632 terabytes
+				sru: model.ByteUnit(1610612736000) // 1610612736000 bytes = 1610612.736000 megabytes = 1610.612736 gigabytes = 16.1 terabytes
+				hru: model.ByteUnit(1073741824000) // 1073741824000 bytes = 1073741.824 megabytes = 1073.741824 gigabytes = 10.7 terabytes
 			}
 			used_resources: model.NodeResources{
 				cru: 0
@@ -272,9 +233,9 @@ fn test_timestamp_conversion() {
 }
 
 fn test_storage_unit_conversion() {
-	assert gridproxy.dummy_node.total_resources.mru.to_megabytes() == 5178.437632
-	assert gridproxy.dummy_node.total_resources.mru.to_gigabytes() == 5.178437632
-	assert gridproxy.dummy_node.total_resources.mru.to_terabytes() == 0.005178437632
+	assert gridproxy.dummy_node.capacity.total_resources.mru.to_megabytes() == 5178.437632
+	assert gridproxy.dummy_node.capacity.total_resources.mru.to_gigabytes() == 5.178437632
+	assert gridproxy.dummy_node.capacity.total_resources.mru.to_terabytes() == 0.005178437632
 }
 
 fn test_tft_conversion() {
@@ -285,16 +246,8 @@ fn test_tft_conversion() {
 
 fn test_calc_available_resources_on_node() {
 	// dummy node was created with 0 used resources
-	assert gridproxy.dummy_node.calc_available_resources().mru == gridproxy.dummy_node.total_resources.mru
-	assert gridproxy.dummy_node.calc_available_resources().hru == gridproxy.dummy_node.total_resources.hru
-	assert gridproxy.dummy_node.calc_available_resources().sru == gridproxy.dummy_node.total_resources.sru
-	assert gridproxy.dummy_node.calc_available_resources().cru == gridproxy.dummy_node.total_resources.cru
-}
-
-fn test_calc_available_resources_on_node_with_nested_capacity() {
-	// dummy node was created with 0 used resources
-	assert gridproxy.dummy_node_with_nested_capacity.calc_available_resources().mru == gridproxy.dummy_node.total_resources.mru
-	assert gridproxy.dummy_node_with_nested_capacity.calc_available_resources().hru == gridproxy.dummy_node.total_resources.hru
-	assert gridproxy.dummy_node_with_nested_capacity.calc_available_resources().sru == gridproxy.dummy_node.total_resources.sru
-	assert gridproxy.dummy_node_with_nested_capacity.calc_available_resources().cru == gridproxy.dummy_node.total_resources.cru
+	assert gridproxy.dummy_node.calc_available_resources().mru == gridproxy.dummy_node.capacity.total_resources.mru
+	assert gridproxy.dummy_node.calc_available_resources().hru == gridproxy.dummy_node.capacity.total_resources.hru
+	assert gridproxy.dummy_node.calc_available_resources().sru == gridproxy.dummy_node.capacity.total_resources.sru
+	assert gridproxy.dummy_node.calc_available_resources().cru == gridproxy.dummy_node.capacity.total_resources.cru
 }

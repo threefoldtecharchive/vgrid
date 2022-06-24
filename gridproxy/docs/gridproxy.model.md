@@ -30,15 +30,13 @@
 - [Node](#Node)
   - [calc_available_resources](#calc_available_resources)
   - [is_online](#is_online)
+- [Node_](#Node_)
 - [NodeCapacity](#NodeCapacity)
 - [NodeContractDetails](#NodeContractDetails)
 - [NodeLocation](#NodeLocation)
 - [NodeResources](#NodeResources)
 - [NodesFilter](#NodesFilter)
   - [to_map](#to_map)
-- [NodeWithNestedCapacity](#NodeWithNestedCapacity)
-  - [calc_available_resources](#calc_available_resources)
-  - [is_online](#is_online)
 - [PublicConfig](#PublicConfig)
 - [PublicIP](#PublicIP)
 - [StatsFilter](#StatsFilter)
@@ -279,6 +277,49 @@ pub:
 struct Node {
 pub:
 	id                string
+	node_id           u64          [json: nodeId]
+	farm_id           u64          [json: farmId]
+	twin_id           u64          [json: twinId]
+	grid_version      u64          [json: gridVersion]
+	uptime            SecondUnit
+	created           UnixTime     [json: created]
+	farming_policy_id u64          [json: farmingPolicyId]
+	updated_at        UnixTime     [json: updatedAt]
+	capacity          NodeCapacity
+	location          NodeLocation
+	public_config     PublicConfig [json: publicConfig]
+	certification     string       [json: certificationType]
+	status            string
+	dedicated         bool
+	rent_contract_id  u64          [json: rentContractId]
+	rented_by_twin_id u64          [json: rentedByTwinId]
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## calc_available_resources
+```v
+fn (n &Node) calc_available_resources() NodeResources
+```
+
+
+[[Return to contents]](#Contents)
+
+## is_online
+```v
+fn (n &Node) is_online() bool
+```
+
+
+[[Return to contents]](#Contents)
+
+## Node_
+```v
+struct Node_ {
+pub:
+	id                string
 	node_id           u64           [json: nodeId]
 	farm_id           u64           [json: farmId]
 	twin_id           u64           [json: twinId]
@@ -299,23 +340,7 @@ pub:
 }
 ```
 
-this is ugly, but it works. we need two models for `Node` and reimplemnt the same fields and methods expcept for capacity srtucture it's a hack to make the json parser work as the gridproxy API have some inconsistencies see for more context: https://github.com/threefoldtech/tfgridclient_proxy/issues/164
-
-[[Return to contents]](#Contents)
-
-## calc_available_resources
-```v
-fn (n &Node) calc_available_resources() NodeResources
-```
-
-
-[[Return to contents]](#Contents)
-
-## is_online
-```v
-fn (n &Node) is_online() bool
-```
-
+this is ugly, but it works. we need two models for `Node` and reimplemnt the same fields expcept for capacity srtucture it's a hack to make the json parser work as the gridproxy API have some inconsistencies see for more context: https://github.com/threefoldtech/tfgridclient_proxy/issues/164
 
 [[Return to contents]](#Contents)
 
@@ -409,49 +434,6 @@ serialize NodesFilter to map
 
 [[Return to contents]](#Contents)
 
-## NodeWithNestedCapacity
-```v
-struct NodeWithNestedCapacity {
-pub:
-	id                string
-	node_id           u64          [json: nodeId]
-	farm_id           u64          [json: farmId]
-	twin_id           u64          [json: twinId]
-	grid_version      u64          [json: gridVersion]
-	uptime            SecondUnit
-	created           UnixTime     [json: created]
-	farming_policy_id u64          [json: farmingPolicyId]
-	updated_at        UnixTime     [json: updatedAt]
-	capacity          NodeCapacity
-	location          NodeLocation
-	public_config     PublicConfig [json: publicConfig]
-	certification     string       [json: certificationType]
-	status            string
-	dedicated         bool
-	rent_contract_id  u64          [json: rentContractId]
-	rented_by_twin_id u64          [json: rentedByTwinId]
-}
-```
-
-
-[[Return to contents]](#Contents)
-
-## calc_available_resources
-```v
-fn (n &NodeWithNestedCapacity) calc_available_resources() NodeResources
-```
-
-
-[[Return to contents]](#Contents)
-
-## is_online
-```v
-fn (n &NodeWithNestedCapacity) is_online() bool
-```
-
-
-[[Return to contents]](#Contents)
-
 ## PublicConfig
 ```v
 struct PublicConfig {
@@ -529,4 +511,4 @@ serialize NodesFilter to map
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 23 Jun 2022 00:20:04
+#### Powered by vdoc. Generated on: 24 Jun 2022 19:40:40
