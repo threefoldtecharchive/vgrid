@@ -91,7 +91,7 @@ pub fn (n &Node) calc_available_resources() NodeResources {
 }
 
 // enable the client to have one representation of the node model
-fn (n &Node_) with_nested_capacity() Node {
+pub fn (n &Node_) with_nested_capacity() Node {
 	return Node{
 		id: n.id
 		node_id: n.node_id
