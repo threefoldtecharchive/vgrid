@@ -1,5 +1,7 @@
 module model
 
+import arrays
+
 pub struct ContractBilling {
 pub:
 	amount_billed     TFTUnit  [json: amountBilled]
@@ -24,6 +26,17 @@ pub:
 	contract_type string              [json: 'type']
 	details       NodeContractDetails [json: details]
 	billing       []ContractBilling   [json: billing]
+}
+
+pub fn (c &Contract) total_billed() TFTUnit {
+	if c.billing.len == 0 {
+		return 0
+	}
+	mut total := u64(0)
+	for b in c.billing {
+		total += b.amount_billed
+	}
+	return TFTUnit(total)
 }
 
 // TODO: Implement Limit struct (size, page, retcount, randomize)

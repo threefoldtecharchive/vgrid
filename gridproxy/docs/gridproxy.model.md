@@ -20,6 +20,7 @@
   - [to_time](#to_time)
 - [NodeStatus](#NodeStatus)
 - [Contract](#Contract)
+  - [total_billed](#total_billed)
 - [ContractBilling](#ContractBilling)
 - [ContractFilter](#ContractFilter)
   - [to_map](#to_map)
@@ -31,6 +32,7 @@
   - [calc_available_resources](#calc_available_resources)
   - [is_online](#is_online)
 - [Node_](#Node_)
+  - [with_nested_capacity](#with_nested_capacity)
 - [NodeCapacity](#NodeCapacity)
 - [NodeContractDetails](#NodeContractDetails)
 - [NodeLocation](#NodeLocation)
@@ -39,6 +41,7 @@
   - [to_map](#to_map)
 - [PublicConfig](#PublicConfig)
 - [PublicIP](#PublicIP)
+- [ResourcesFilter](#ResourcesFilter)
 - [StatsFilter](#StatsFilter)
 - [Twin](#Twin)
 - [TwinFilter](#TwinFilter)
@@ -151,6 +154,14 @@ pub:
 	details       NodeContractDetails [json: details]
 	billing       []ContractBilling   [json: billing]
 }
+```
+
+
+[[Return to contents]](#Contents)
+
+## total_billed
+```v
+fn (c &Contract) total_billed() TFTUnit
 ```
 
 
@@ -344,6 +355,15 @@ this is ugly, but it works. we need two models for `Node` and reimplemnt the sam
 
 [[Return to contents]](#Contents)
 
+## with_nested_capacity
+```v
+fn (n &Node_) with_nested_capacity() Node
+```
+
+enable the client to have one representation of the node model
+
+[[Return to contents]](#Contents)
+
 ## NodeCapacity
 ```v
 struct NodeCapacity {
@@ -464,6 +484,20 @@ pub:
 
 [[Return to contents]](#Contents)
 
+## ResourcesFilter
+```v
+struct ResourcesFilter {
+pub:
+	free_mru_gb u64
+	free_sru_gb u64
+	free_hru_gb u64
+	free_ips    u64
+}
+```
+
+
+[[Return to contents]](#Contents)
+
 ## StatsFilter
 ```v
 struct StatsFilter {
@@ -511,4 +545,4 @@ serialize NodesFilter to map
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 24 Jun 2022 19:40:40
+#### Powered by vdoc. Generated on: 25 Jun 2022 02:22:35

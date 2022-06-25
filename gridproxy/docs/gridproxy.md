@@ -4,23 +4,26 @@
 
 
 ## Contents
-- [module gridproxy](#module-gridproxy)
-  - [Contents](#contents)
-  - [get](#get)
-  - [TFGridNet](#tfgridnet)
-  - [GridProxyClient](#gridproxyclient)
-  - [check_health](#check_health)
+- [get](#get)
+- [TFGridNet](#TFGridNet)
+- [GridProxyClient](#GridProxyClient)
   - [get_contracts](#get_contracts)
+  - [get_contracts_by_node_id](#get_contracts_by_node_id)
+  - [get_contracts_by_twin_id](#get_contracts_by_twin_id)
+  - [get_farm_by_id](#get_farm_by_id)
+  - [get_farm_by_name](#get_farm_by_name)
   - [get_farms](#get_farms)
+  - [get_farms_by_twin_id](#get_farms_by_twin_id)
   - [get_gateway_by_id](#get_gateway_by_id)
   - [get_gateways](#get_gateways)
   - [get_node_by_id](#get_node_by_id)
   - [get_nodes](#get_nodes)
+  - [get_nodes_has_resources](#get_nodes_has_resources)
   - [get_stats](#get_stats)
   - [get_twin_by_account](#get_twin_by_account)
   - [get_twin_by_id](#get_twin_by_id)
   - [get_twins](#get_twins)
-      - [Powered by vdoc. Generated on: 24 Jun 2022 19:39:46](#powered-by-vdoc-generated-on-24-jun-2022-193946)
+  - [is_pingable](#is_pingable)
 
 ## get
 ```v
@@ -54,17 +57,6 @@ pub mut:
 
 [[Return to contents]](#Contents)
 
-## check_health
-```v
-fn (mut c GridProxyClient) check_health() bool
-```
-
-check if API server is reachable and responding.  
-
-returns: bool, `true` if API server is reachable and responding, `false` otherwise
-
-[[Return to contents]](#Contents)
-
 ## get_contracts
 ```v
 fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract
@@ -89,6 +81,58 @@ fetch all contracts information with pagination.
 
 [[Return to contents]](#Contents)
 
+## get_contracts_by_node_id
+```v
+fn (mut c GridProxyClient) get_contracts_by_node_id(node_id u64) ?[]Contract
+```
+
+fetch all contracts deployed on specific node.  
+
+* `node_id`: node id.  
+
+returns: `[]Contract` or `Error`.  
+
+[[Return to contents]](#Contents)
+
+## get_contracts_by_twin_id
+```v
+fn (mut c GridProxyClient) get_contracts_by_twin_id(twin_id u64) ?[]Contract
+```
+
+fetch all contracts owned by specific twin.  
+
+* `twin_id`: twin id.  
+
+returns: `[]Contract` or `Error`.  
+
+[[Return to contents]](#Contents)
+
+## get_farm_by_id
+```v
+fn (mut c GridProxyClient) get_farm_by_id(farm_id u64) ?Farm
+```
+
+fetch specific farm information by id.  
+
+* `farm_id`: farm id.  
+
+returns: `Farm` or `Error`.  
+
+[[Return to contents]](#Contents)
+
+## get_farm_by_name
+```v
+fn (mut c GridProxyClient) get_farm_by_name(farm_name string) ?Farm
+```
+
+fetch specific farm information by farm name.  
+
+* `farm_name`: farm name.  
+
+returns: `Farm` or `Error`.  
+
+[[Return to contents]](#Contents)
+
 ## get_farms
 ```v
 fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm
@@ -110,6 +154,19 @@ fetch farms information and public ips.
 * `certification_type` (string): certificate type DIY or Certified. [optional].  
 * `dedicated` (bool): farm is dedicated. [optional].  
 * `stellar_address` (string): farm stellar_address. [optional].  
+
+returns: `[]Farm` or `Error`.  
+
+[[Return to contents]](#Contents)
+
+## get_farms_by_twin_id
+```v
+fn (mut c GridProxyClient) get_farms_by_twin_id(twin_id u64) ?[]Farm
+```
+
+fetch all farms information associated with specific twin.  
+
+* `twin_id`: twin id.  
 
 returns: `[]Farm` or `Error`.  
 
@@ -203,6 +260,22 @@ returns: `[]Node` or `Error`.
 
 [[Return to contents]](#Contents)
 
+## get_nodes_has_resources
+```v
+fn (mut c GridProxyClient) get_nodes_has_resources(filter ResourcesFilter) ?[]Node
+```
+
+fetch all nodes with a minimum free reservable resources.  
+
+* `free_ips` (u64): minimum free ips. [optional].  
+* `free_mru_gb` (u64): minimum free mru in GB. [optional].  
+* `free_sru_gb` (u64): minimum free sru in GB. [optional].  
+* `free_hru_gb` (u64): minimum free hru in GB. [optional].  
+
+returns: `[]Node` or `Error`.  
+
+[[Return to contents]](#Contents)
+
 ## get_stats
 ```v
 fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats
@@ -259,4 +332,15 @@ returns: `[]Twin` or `Error`.
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 24 Jun 2022 19:39:46
+## is_pingable
+```v
+fn (mut c GridProxyClient) is_pingable() bool
+```
+
+check if API server is reachable and responding.  
+
+returns: bool, `true` if API server is reachable and responding, `false` otherwise
+
+[[Return to contents]](#Contents)
+
+#### Powered by vdoc. Generated on: 25 Jun 2022 02:22:35

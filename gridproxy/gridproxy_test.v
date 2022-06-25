@@ -55,22 +55,22 @@ const (
 
 fn test_create_gridproxy_client_qa() {
 	mut gp := get(.qa, gridproxy.cache)
-	assert gp.check_health() == true
+	assert gp.is_pingable() == true
 }
 
 fn test_create_gridproxy_client_dev() {
 	mut gp := get(.dev, gridproxy.cache)
-	assert gp.check_health() == true
+	assert gp.is_pingable() == true
 }
 
 fn test_create_gridproxy_client_test() {
 	mut gp := get(.test, gridproxy.cache)
-	assert gp.check_health() == true
+	assert gp.is_pingable() == true
 }
 
 fn test_create_gridproxy_client_main() {
 	mut gp := get(.main, gridproxy.cache)
-	assert gp.check_health() == true
+	assert gp.is_pingable() == true
 }
 
 fn test_get_nodes_qa() {
