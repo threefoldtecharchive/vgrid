@@ -1,7 +1,5 @@
 module model
 
-import arrays
-
 pub struct ContractBilling {
 pub:
 	amount_billed     TFTUnit  [json: amountBilled]
