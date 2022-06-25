@@ -1,6 +1,6 @@
 module explorer
 
-import despiegk.crystallib.httpconnection
+import freeflowuniverse.crystallib.httpconnection
 import net.http
 import json
 // import crypto.md5

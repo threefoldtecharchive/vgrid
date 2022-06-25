@@ -2,7 +2,7 @@ module explorer
 
 import sync.pool
 import threefoldtech.vgrid.gridproxy
-import despiegk.crystallib.texttools
+import freeflowuniverse.crystallib.texttools
 
 struct SRequest {
 	nodeid int
