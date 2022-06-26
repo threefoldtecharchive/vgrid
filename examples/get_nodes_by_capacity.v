@@ -8,7 +8,7 @@ fn main(){
 	mut resources_filter := ResourcesFilter {}
 
 	if "--help" in os.args {
-		println("This method to get nodes by city or country or both \n
+		println("This script to get nodes by available resources \n
 		--sru 		nodes selected should have a minumum value of free sru in GB (ssd resource unit) equal to this  (optional) \n
 		--hru 		nodes selected should have a minumum value of free hru in GB (hd resource unit) equal to this  (optional) \n
 		--mru   	nodes selected should have a minumum value of free mru in GB (memory resource unit) equal to this (optional) \n
@@ -36,7 +36,7 @@ fn main(){
 		resources_filter.free_mru_gb = os.args[index_val+1].u64()
 	}
 
-	mut gp_client := gridproxy.get(.test, false)
+	mut gp_client := gridproxy.get(.test, true)
 	nodes_with_min_resources := gp_client.get_nodes_has_resources(resources_filter) or {
 		println("got an error while getting nodes")
 		println("error message : ${err.msg()}")
