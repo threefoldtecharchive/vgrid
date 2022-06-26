@@ -4,20 +4,20 @@ import json
 
 [params]
 pub struct FarmFilter {
-pub:
-	page               u64 | EmptyOption = EmptyOption{}
-	size               u64 | EmptyOption = EmptyOption{}
-	ret_count          u64 | EmptyOption = EmptyOption{}
-	free_ips           u64 | EmptyOption = EmptyOption{}
-	total_ips          u64 | EmptyOption = EmptyOption{}
-	stellar_address    string
-	pricing_policy_id  u64 | EmptyOption = EmptyOption{}
-	farm_id            u64 | EmptyOption = EmptyOption{}
-	twin_id            u64 | EmptyOption = EmptyOption{}
-	name               string
-	name_contains      string
-	certification_type string
-	dedicated          bool | EmptyOption = EmptyOption{}
+	pub mut:
+		page               u64 | EmptyOption = EmptyOption{}
+		size               u64 | EmptyOption = EmptyOption{}
+		ret_count          u64 | EmptyOption = EmptyOption{}
+		free_ips           u64 | EmptyOption = EmptyOption{}
+		total_ips          u64 | EmptyOption = EmptyOption{}
+		stellar_address    string
+		pricing_policy_id  u64 | EmptyOption = EmptyOption{}
+		farm_id            u64 | EmptyOption = EmptyOption{}
+		twin_id            u64 | EmptyOption = EmptyOption{}
+		name               string
+		name_contains      string
+		certification_type string
+		dedicated          bool | EmptyOption = EmptyOption{}
 }
 
 // serialize FarmFilter to map
@@ -94,18 +94,19 @@ pub fn (f &FarmFilter) to_map() map[string]string {
 
 [params]
 pub struct ContractFilter {
-	page                 u64 | EmptyOption = EmptyOption{}
-	size                 u64 | EmptyOption = EmptyOption{}
-	ret_count            u64 | EmptyOption = EmptyOption{}
-	contract_id          u64 | EmptyOption = EmptyOption{}
-	twin_id              u64 | EmptyOption = EmptyOption{}
-	node_id              u64 | EmptyOption = EmptyOption{}
-	contract_type        string
-	state                string
-	name                 string
-	number_of_public_ips u64 | EmptyOption = EmptyOption{}
-	deployment_data      string
-	deployment_hash      string
+	pub mut:
+		page                 u64 | EmptyOption = EmptyOption{}
+		size                 u64 | EmptyOption = EmptyOption{}
+		ret_count            u64 | EmptyOption = EmptyOption{}
+		contract_id          u64 | EmptyOption = EmptyOption{}
+		twin_id              u64 | EmptyOption = EmptyOption{}
+		node_id              u64 | EmptyOption = EmptyOption{}
+		contract_type        string
+		state                string
+		name                 string
+		number_of_public_ips u64 | EmptyOption = EmptyOption{}
+		deployment_data      string
+		deployment_hash      string
 }
 
 // serialize ContractFilter to map
@@ -173,26 +174,26 @@ pub fn (f &ContractFilter) to_map() map[string]string {
 
 [params]
 pub struct NodesFilter {
-pub:
-	page          u64 | EmptyOption = EmptyOption{}
-	size          u64 | EmptyOption = EmptyOption{}
-	ret_count     u64 | EmptyOption = EmptyOption{}
-	free_mru      u64 | EmptyOption = EmptyOption{}
-	free_sru      u64 | EmptyOption = EmptyOption{}
-	free_hru      u64 | EmptyOption = EmptyOption{}
-	free_ips      u64 | EmptyOption = EmptyOption{}
-	city          string
-	country       string
-	farm_name     string
-	ipv4          string
-	ipv6          string
-	domain        string
-	status        string
-	dedicated     bool | EmptyOption = EmptyOption{}
-	rentable      bool | EmptyOption = EmptyOption{}
-	rented_by     u64 | EmptyOption  = EmptyOption{}
-	available_for u64 | EmptyOption  = EmptyOption{}
-	farm_ids      []u64
+	pub mut:
+		page          u64 | EmptyOption = EmptyOption{}
+		size          u64 | EmptyOption = EmptyOption{}
+		ret_count     u64 | EmptyOption = EmptyOption{}
+		free_mru      u64 | EmptyOption = EmptyOption{}
+		free_sru      u64 | EmptyOption = EmptyOption{}
+		free_hru      u64 | EmptyOption = EmptyOption{}
+		free_ips      u64 | EmptyOption = EmptyOption{}
+		city          string
+		country       string
+		farm_name     string
+		ipv4          string
+		ipv6          string
+		domain        string
+		status        string
+		dedicated     bool | EmptyOption = EmptyOption{}
+		rentable      bool | EmptyOption = EmptyOption{}
+		rented_by     u64 | EmptyOption  = EmptyOption{}
+		available_for u64 | EmptyOption  = EmptyOption{}
+		farm_ids      []u64
 }
 
 // serialize NodesFilter to map
@@ -299,26 +300,27 @@ pub enum NodeStatus {
 
 [params]
 pub struct ResourcesFilter {
-pub mut:
-	free_mru_gb u64
-	free_sru_gb u64
-	free_hru_gb u64
-	free_ips    u64
+	pub mut:
+		free_mru_gb u64
+		free_sru_gb u64
+		free_hru_gb u64
+		free_ips    u64
 }
 
 [params]
 pub struct StatsFilter {
-pub:
-	status NodeStatus
+	pub mut:
+		status NodeStatus
 }
 
 [params]
 pub struct TwinFilter {
-	page       u64 | EmptyOption = EmptyOption{}
-	size       u64 | EmptyOption = EmptyOption{}
-	ret_count  string
-	twin_id    u64 | EmptyOption = EmptyOption{}
-	account_id string
+	pub mut:
+		page       u64 | EmptyOption = EmptyOption{}
+		size       u64 | EmptyOption = EmptyOption{}
+		ret_count  string
+		twin_id    u64 | EmptyOption = EmptyOption{}
+		account_id string
 }
 
 // serialize NodesFilter to map
