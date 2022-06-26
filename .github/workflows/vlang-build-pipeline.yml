@@ -27,7 +27,7 @@ jobs:
       run: v install https://github.com/freeflowuniverse/crystallib
     - name: Keeping compatibility with old imports in some modules
       run: |
-        mkdir -p ~/.vmodules/freeflowuniverse/crystallib
-        cp -r ~/.vmodules/freeflowuniverse/crystallib/. ~/.vmodules/freeflowuniverse/crystallib/.
+        mkdir -p ~/.vmodules/despiegk/crystallib
+        cp -r ~/.vmodules/freeflowuniverse/crystallib/. ~/.vmodules/despiegk/crystallib/.
     - name: Run V tests
       run: v -stats test ./gridproxy/

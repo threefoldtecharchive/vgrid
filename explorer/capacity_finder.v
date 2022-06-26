@@ -1,6 +1,6 @@
 module explorer
 import threefoldtech.vgrid.gridproxy
-import freeflowuniverse.crystallib.texttools
+import despiegk.crystallib.texttools
 import rand
 
 pub enum Region {
