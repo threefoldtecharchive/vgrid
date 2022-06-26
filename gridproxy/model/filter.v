@@ -299,7 +299,7 @@ pub enum NodeStatus {
 
 [params]
 pub struct ResourcesFilter {
-pub:
+pub mut:
 	free_mru_gb u64
 	free_sru_gb u64
 	free_hru_gb u64
