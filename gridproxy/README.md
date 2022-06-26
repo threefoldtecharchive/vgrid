@@ -65,20 +65,26 @@ You would require the following tools to develop and run the project:
   ```
   ```sh
 * Redis-server unless you are set the caching option to false
-  * see [here](https://redis.io/docs/getting-started/installation/install-redis-on-linux/) for redis-server installation instructions
-  * start the redis-server and configure it to connect via unixsocket
+  * see [here](https://redis.io/docs/getting-started/installation/) for redis-server installation instructions
+  * start the redis-server on default tcp port, you can use `redis-server` command.
   ```sh
-  redis-server --unixsocket /tmp/redis-default.sock --unixsocketperm 700 --port 0 --daemonize yes
+  redis-server --daemonize yes
+  ```
+or your os specific instructions for running redis-server as a service. on linux/ubuntu you can use 
+  ```sh
+  sudo systemctl start redis-server.service
   ```
 
 ### Installation
 
-* either clone the repository inside the $HOME/.vmodule directory
+* either clone the repository inside the `$HOME/.vmodules/threefoldtech` directory
   ```sh
+  mkdir -p $HOME/.vmodules/threefoldtech
+  cd $HOME/.vmodules/threefoldtech
   git clone https://github.com/threefoldtech/vgrid.git
   ```
   
-* or use the `v install` command to install the module
+* or use the `v install` command to install the module.
   ```sh
   v install --once -v --git https://github.com/threefoldtech/vgrid
   ```
