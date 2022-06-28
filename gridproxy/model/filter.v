@@ -26,7 +26,7 @@ pub fn (f &FarmFilter) to_map() map[string]string {
 	match f.page {
 		EmptyOption {}
 		u64 {
-			m['pages'] = f.page.str()
+			m['page'] = f.page.str()
 		}
 	}
 	match f.size {
@@ -115,7 +115,7 @@ pub fn (f &ContractFilter) to_map() map[string]string {
 	match f.page {
 		EmptyOption {}
 		u64 {
-			m['pages'] = f.page.str()
+			m['page'] = f.page.str()
 		}
 	}
 	match f.size {
@@ -173,7 +173,7 @@ pub fn (f &ContractFilter) to_map() map[string]string {
 }
 
 [params]
-pub struct NodesFilter {
+pub struct NodeFilter {
 	pub mut:
 		page          u64 | EmptyOption = EmptyOption{}
 		size          u64 | EmptyOption = EmptyOption{}
@@ -196,13 +196,13 @@ pub struct NodesFilter {
 		farm_ids      []u64
 }
 
-// serialize NodesFilter to map
-pub fn (p &NodesFilter) to_map() map[string]string {
+// serialize NodeFilter to map
+pub fn (p &NodeFilter) to_map() map[string]string {
 	mut m := map[string]string{}
 	match p.page {
 		EmptyOption {}
 		u64 {
-			m['pages'] = p.page.str()
+			m['page'] = p.page.str()
 		}
 	}
 	match p.size {
@@ -299,7 +299,7 @@ pub enum NodeStatus {
 }
 
 [params]
-pub struct ResourcesFilter {
+pub struct ResourceFilter {
 	pub mut:
 		free_mru_gb u64
 		free_sru_gb u64
@@ -308,7 +308,7 @@ pub struct ResourcesFilter {
 }
 
 [params]
-pub struct StatsFilter {
+pub struct StatFilter {
 	pub mut:
 		status NodeStatus
 }
@@ -323,13 +323,13 @@ pub struct TwinFilter {
 		account_id string
 }
 
-// serialize NodesFilter to map
+// serialize TwinFilter to map
 pub fn (p &TwinFilter) to_map() map[string]string {
 	mut m := map[string]string{}
 	match p.page {
 		EmptyOption {}
 		u64 {
-			m['pages'] = p.page.str()
+			m['page'] = p.page.str()
 		}
 	}
 	match p.size {

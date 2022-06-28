@@ -1,4 +1,4 @@
-# module gridproxy
+# module threefoldtech.vgrid.gridproxy
 
 
 
@@ -10,19 +10,24 @@
   - [get_contracts](#get_contracts)
   - [get_contracts_by_node_id](#get_contracts_by_node_id)
   - [get_contracts_by_twin_id](#get_contracts_by_twin_id)
+  - [get_contracts_iterator](#get_contracts_iterator)
   - [get_farm_by_id](#get_farm_by_id)
   - [get_farm_by_name](#get_farm_by_name)
   - [get_farms](#get_farms)
   - [get_farms_by_twin_id](#get_farms_by_twin_id)
+  - [get_farms_iterator](#get_farms_iterator)
   - [get_gateway_by_id](#get_gateway_by_id)
   - [get_gateways](#get_gateways)
+  - [get_gateways_iterator](#get_gateways_iterator)
   - [get_node_by_id](#get_node_by_id)
   - [get_nodes](#get_nodes)
   - [get_nodes_has_resources](#get_nodes_has_resources)
+  - [get_nodes_iterator](#get_nodes_iterator)
   - [get_stats](#get_stats)
   - [get_twin_by_account](#get_twin_by_account)
   - [get_twin_by_id](#get_twin_by_id)
   - [get_twins](#get_twins)
+  - [get_twins_iterator](#get_twins_iterator)
   - [is_pingable](#is_pingable)
 
 ## get
@@ -30,6 +35,12 @@
 fn get(net TFGridNet, use_redis_cache bool) &GridProxyClient
 ```
 
+get returns a gridproxy client for the given net.  
+
+* `net` (enum): the net to get the gridproxy client for (one of .main, .test, .dev, .qa).  
+* `use_redis_cache` (bool): if true, the gridproxy client will use a redis cache and redis should be running on the host. otherwise, the gridproxy client will not use cache.  
+
+returns: `&GridProxyClient`.  
 
 [[Return to contents]](#Contents)
 
@@ -62,7 +73,7 @@ pub mut:
 fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract
 ```
 
-fetch all contracts information with pagination.  
+get_contracts fetchs contracts information with pagination.  
 
 * `page` (u64): Page number. [optional].  
 * `size` (u64): Max result per page. [optional].  
@@ -83,27 +94,36 @@ fetch all contracts information with pagination.
 
 ## get_contracts_by_node_id
 ```v
-fn (mut c GridProxyClient) get_contracts_by_node_id(node_id u64) ?[]Contract
+fn (mut c GridProxyClient) get_contracts_by_node_id(node_id u64) ContractIterator
 ```
 
-fetch all contracts deployed on specific node.  
+get_contracts_by_node_id returns iterator over all contracts deployed on specific node.  
 
 * `node_id`: node id.  
 
-returns: `[]Contract` or `Error`.  
+returns: `ContractIterator`.  
 
 [[Return to contents]](#Contents)
 
 ## get_contracts_by_twin_id
 ```v
-fn (mut c GridProxyClient) get_contracts_by_twin_id(twin_id u64) ?[]Contract
+fn (mut c GridProxyClient) get_contracts_by_twin_id(twin_id u64) ContractIterator
 ```
 
-fetch all contracts owned by specific twin.  
+get_contracts_by_twin_id returns iterator over all contracts owned by specific twin.  
 
 * `twin_id`: twin id.  
 
-returns: `[]Contract` or `Error`.  
+returns: `ContractIterator`.  
+
+[[Return to contents]](#Contents)
+
+## get_contracts_iterator
+```v
+fn (mut c GridProxyClient) get_contracts_iterator(filter ContractFilter) ContractIterator
+```
+
+get_contracts_iterator creates an iterator through contracts pages with custom filter
 
 [[Return to contents]](#Contents)
 
@@ -138,7 +158,7 @@ returns: `Farm` or `Error`.
 fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm
 ```
 
-fetch farms information and public ips.  
+get_farms fetchs farms information and public ips.  
 
 * `page` (u64): Page number. [optional].  
 * `size` (u64): Max result per page. [optional].  
@@ -161,14 +181,23 @@ returns: `[]Farm` or `Error`.
 
 ## get_farms_by_twin_id
 ```v
-fn (mut c GridProxyClient) get_farms_by_twin_id(twin_id u64) ?[]Farm
+fn (mut c GridProxyClient) get_farms_by_twin_id(twin_id u64) FarmIterator
 ```
 
-fetch all farms information associated with specific twin.  
+get_farms_by_twin_id returns iterator over all farms information associated with specific twin.  
 
 * `twin_id`: twin id.  
 
-returns: `[]Farm` or `Error`.  
+returns: `FarmIterator`.  
+
+[[Return to contents]](#Contents)
+
+## get_farms_iterator
+```v
+fn (mut c GridProxyClient) get_farms_iterator(filter FarmFilter) FarmIterator
+```
+
+get_farms_iterator creates an iterator through farms pages with custom filter
 
 [[Return to contents]](#Contents)
 
@@ -177,7 +206,7 @@ returns: `[]Farm` or `Error`.
 fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?Node
 ```
 
-fetch specific gateway information by node id.  
+get_gateway_by_id fetchs specific gateway information by node id.  
 
 * `node_id` (u64): node id.  
 
@@ -187,10 +216,10 @@ returns: `Node` or `Error`.
 
 ## get_gateways
 ```v
-fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node
+fn (mut c GridProxyClient) get_gateways(params NodeFilter) ?[]Node
 ```
 
-fetch all gateways information and public configurations and domains with pagination.  
+get_gateways fetchs gateways information and public configurations and domains with pagination.  
 
 * `page` (u64): Page number. [optional].  
 * `size` (u64): Max result per page. [optional].  
@@ -216,12 +245,21 @@ returns: `[]Node` or `Error`.
 
 [[Return to contents]](#Contents)
 
+## get_gateways_iterator
+```v
+fn (mut c GridProxyClient) get_gateways_iterator(filter NodeFilter) NodeIterator
+```
+
+get_gateways_iterator creates an iterator through gateway pages with custom filter
+
+[[Return to contents]](#Contents)
+
 ## get_node_by_id
 ```v
 fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?Node
 ```
 
-fetch specific node information by node id.  
+get_node_by_id fetchs specific node information by node id.  
 
 * `node_id` (u64): node id.  
 
@@ -231,10 +269,10 @@ returns: `Node` or `Error`.
 
 ## get_nodes
 ```v
-fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node
+fn (mut c GridProxyClient) get_nodes(params NodeFilter) ?[]Node
 ```
 
-fetch all nodes information and public configurations with pagination.  
+get_nodes fetchs nodes information and public configurations with pagination.  
 
 * `page` (u64): Page number. [optional].  
 * `size` (u64): Max result per page. [optional].  
@@ -262,30 +300,39 @@ returns: `[]Node` or `Error`.
 
 ## get_nodes_has_resources
 ```v
-fn (mut c GridProxyClient) get_nodes_has_resources(filter ResourcesFilter) ?[]Node
+fn (mut c GridProxyClient) get_nodes_has_resources(filter ResourceFilter) NodeIterator
 ```
 
-fetch all nodes with a minimum free reservable resources.  
+get_nodes_has_resources returns iterator over all nodes with specific minimum free reservable resources.  
 
 * `free_ips` (u64): minimum free ips. [optional].  
 * `free_mru_gb` (u64): minimum free mru in GB. [optional].  
 * `free_sru_gb` (u64): minimum free sru in GB. [optional].  
 * `free_hru_gb` (u64): minimum free hru in GB. [optional].  
 
-returns: `[]Node` or `Error`.  
+returns: `NodeIterator`.  
+
+[[Return to contents]](#Contents)
+
+## get_nodes_iterator
+```v
+fn (mut c GridProxyClient) get_nodes_iterator(filter NodeFilter) NodeIterator
+```
+
+get_nodes_iterator creates an iterator through node pages with custom filter
 
 [[Return to contents]](#Contents)
 
 ## get_stats
 ```v
-fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats
+fn (mut c GridProxyClient) get_stats(filter StatFilter) ?GridStat
 ```
 
-fetch statistics about the grid.  
+get_stats fetchs stats about the grid.  
 
 * `status` (string): Node status filter, set to 'up' to get online nodes only.. [optional].  
 
-returns: `GridStats` or `Error`.  
+returns: `GridStat` or `Error`.  
 
 [[Return to contents]](#Contents)
 
@@ -320,7 +367,7 @@ returns: `Twin` or `Error`.
 fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin
 ```
 
-fetch all twins information with pagaination.  
+get_twins fetchs twins information with pagaination.  
 
 * `page` (u64): Page number. [optional].  
 * `size` (u64): Max result per page. [optional].  
@@ -332,15 +379,24 @@ returns: `[]Twin` or `Error`.
 
 [[Return to contents]](#Contents)
 
+## get_twins_iterator
+```v
+fn (mut c GridProxyClient) get_twins_iterator(filter TwinFilter) TwinIterator
+```
+
+get_twins_iterator creates an iterator through twin pages with custom filter
+
+[[Return to contents]](#Contents)
+
 ## is_pingable
 ```v
 fn (mut c GridProxyClient) is_pingable() bool
 ```
 
-check if API server is reachable and responding.  
+is_pingable checks if API server is reachable and responding.  
 
 returns: bool, `true` if API server is reachable and responding, `false` otherwise
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 25 Jun 2022 02:22:35
+#### Powered by vdoc. Generated on: 28 Jun 2022 13:01:22

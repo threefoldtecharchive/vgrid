@@ -1,8 +1,8 @@
 module gridproxy
 
-// client library for threefold gridproxy API
+// client library for threefold gridproxy API.
 import json
-import model { Contract, ContractFilter, Farm, FarmFilter, GridStats, Node, Node_, NodesFilter, ResourcesFilter, StatsFilter, Twin, TwinFilter }
+import model {Contract, ContractFilter, Farm, FarmFilter, GridStat, Node, Node_, NodeFilter, ResourceFilter, StatFilter, Twin, TwinFilter, NodeIterator, FarmIterator, TwinIterator, ContractIterator }
 
 /*
 all errors returned by the gridproxy API or the client are wrapped in a standard `Error` object with two fields.
@@ -29,7 +29,7 @@ const (
 	err_invalid_resp = 24
 )
 
-// fetch specific node information by node id.
+// get_node_by_id fetchs specific node information by node id.
 //
 // * `node_id` (u64): node id.
 //
@@ -57,7 +57,7 @@ pub fn (mut c GridProxyClient) get_node_by_id(node_id u64) ?Node {
 	return node
 }
 
-// fetch specific gateway information by node id.
+// get_gateway_by_id fetchs specific gateway information by node id.
 //
 // * `node_id` (u64): node id.
 //
@@ -85,7 +85,7 @@ pub fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?Node {
 	return node
 }
 
-// fetch all nodes information and public configurations with pagination.
+// get_nodes fetchs nodes information and public configurations with pagination.
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
@@ -108,7 +108,7 @@ pub fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?Node {
 // * `farm_ids` ([]u64): List of farm ids. [optional].
 //
 // returns: `[]Node` or `Error`.
-pub fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node {
+pub fn (mut c GridProxyClient) get_nodes(params NodeFilter) ?[]Node {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
@@ -132,7 +132,7 @@ pub fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node {
 	return nodes
 }
 
-// fetch all gateways information and public configurations and domains with pagination.
+// get_gateways fetchs gateways information and public configurations and domains with pagination.
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
@@ -155,7 +155,7 @@ pub fn (mut c GridProxyClient) get_nodes(params NodesFilter) ?[]Node {
 // * `farm_ids` ([]u64): List of farm ids. [optional].
 //
 // returns: `[]Node` or `Error`.
-pub fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node {
+pub fn (mut c GridProxyClient) get_gateways(params NodeFilter) ?[]Node {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	params_map := params.to_map()
@@ -179,12 +179,12 @@ pub fn (mut c GridProxyClient) get_gateways(params NodesFilter) ?[]Node {
 	return nodes
 }
 
-// fetch statistics about the grid.
+// get_stats fetchs stats about the grid.
 //
 // * `status` (string): Node status filter, set to 'up' to get online nodes only.. [optional].
 //
-// returns: `GridStats` or `Error`.
-pub fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats {
+// returns: `GridStat` or `Error`.
+pub fn (mut c GridProxyClient) get_stats(filter StatFilter) ?GridStat {
 	// needed to allow to use threads
 	mut http_client := c.http_client.clone()
 	mut params_map := map[string]string{}
@@ -205,14 +205,14 @@ pub fn (mut c GridProxyClient) get_stats(filter StatsFilter) ?GridStats {
 		return error_with_code('empty response', gridproxy.err_invalid_resp)
 	}
 
-	stats := json.decode(GridStats, res.data) or {
+	stats := json.decode(GridStat, res.data) or {
 		return error_with_code('error to get jsonstr for grid stats data, json decode: stats filter: $params_map, data: $res.data',
 			gridproxy.err_json_parse)
 	}
 	return stats
 }
 
-// fetch all twins information with pagaination.
+// get_twins fetchs twins information with pagaination.
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
@@ -244,7 +244,7 @@ pub fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin {
 	return twins
 }
 
-// fetch all contracts information with pagination.
+// get_contracts fetchs contracts information with pagination.
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
@@ -283,7 +283,7 @@ pub fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract 
 	return contracts
 }
 
-// fetch farms information and public ips.
+// get_farms fetchs farms information and public ips.
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
@@ -324,128 +324,7 @@ pub fn (mut c GridProxyClient) get_farms(params FarmFilter) ?[]Farm {
 	return farms
 }
 
-// fetch specific twin information by twin id.
-//
-// * `twin_id`: twin id.
-//
-// returns: `Twin` or `Error`.
-pub fn (mut c GridProxyClient) get_twin_by_id(twin_id u64) ?Twin {
-	twins := c.get_twins(twin_id: twin_id) or {
-		return error_with_code('http client error: $err.msg()', gridproxy.err_http_client)
-	}
-	if twins.len == 0 {
-		return error_with_code('no twin found for id: $twin_id', gridproxy.err_not_found)
-	}
-	return twins[0]
-}
-
-// fetch specific twin information by account.
-//
-// * `account_id`: account id.
-//
-// returns: `Twin` or `Error`.
-pub fn (mut c GridProxyClient) get_twin_by_account(account_id string) ?Twin {
-	twins := c.get_twins(account_id: account_id) or {
-		return error_with_code('http client error: $err.msg()', gridproxy.err_http_client)
-	}
-	if twins.len == 0 {
-		return error_with_code('no twin found for account_id: $account_id', gridproxy.err_not_found)
-	}
-	return twins[0]
-}
-
-// fetch specific farm information by id.
-//
-// * `farm_id`: farm id.
-//
-// returns: `Farm` or `Error`.
-pub fn (mut c GridProxyClient) get_farm_by_id(farm_id u64) ?Farm {
-	farms := c.get_farms(farm_id: farm_id) or {
-		return error_with_code('http client error: $err.msg()', gridproxy.err_http_client)
-	}
-	if farms.len == 0 {
-		return error_with_code('no farm found for id: $farm_id', gridproxy.err_not_found)
-	}
-	return farms[0]
-}
-
-// fetch all farms information associated with specific twin.
-//
-// * `twin_id`: twin id.
-//
-// returns: `[]Farm` or `Error`.
-pub fn (mut c GridProxyClient) get_farms_by_twin_id(twin_id u64) ?[]Farm {
-	farms := c.get_farms(twin_id: twin_id) or {
-		return error_with_code('http client error: $err.msg()', gridproxy.err_http_client)
-	}
-
-	return farms
-}
-
-// fetch specific farm information by farm name.
-//
-// * `farm_name`: farm name.
-//
-// returns: `Farm` or `Error`.
-pub fn (mut c GridProxyClient) get_farm_by_name(farm_name string) ?Farm {
-	farms := c.get_farms(name: farm_name) or {
-		return error_with_code('http client error: $err.msg()', gridproxy.err_http_client)
-	}
-	if farms.len == 0 {
-		return error_with_code('no farm found with name: $farm_name', gridproxy.err_not_found)
-	}
-	return farms[0]
-}
-
-// fetch all contracts owned by specific twin.
-//
-// * `twin_id`: twin id.
-//
-// returns: `[]Contract` or `Error`.
-pub fn (mut c GridProxyClient) get_contracts_by_twin_id(twin_id u64) ?[]Contract {
-	contracts := c.get_contracts(twin_id: twin_id) or {
-		return error_with_code('http client error: $err.msg()', gridproxy.err_http_client)
-	}
-
-	return contracts
-}
-
-// fetch all contracts deployed on specific node.
-//
-// * `node_id`: node id.
-//
-// returns: `[]Contract` or `Error`.
-pub fn (mut c GridProxyClient) get_contracts_by_node_id(node_id u64) ?[]Contract {
-	contracts := c.get_contracts(node_id: node_id) or {
-		return error_with_code('http client error: $err.msg()', gridproxy.err_http_client)
-	}
-
-	return contracts
-}
-
-// fetch all nodes with a minimum free reservable resources.
-//
-// * `free_ips` (u64): minimum free ips. [optional].
-// * `free_mru_gb` (u64): minimum free mru in GB. [optional].
-// * `free_sru_gb` (u64): minimum free sru in GB. [optional].
-// * `free_hru_gb` (u64): minimum free hru in GB. [optional].
-//
-// returns: `[]Node` or `Error`.
-pub fn (mut c GridProxyClient) get_nodes_has_resources(filter ResourcesFilter) ?[]Node {
-	mut filter_ := NodesFilter{
-		free_ips: filter.free_ips
-		free_mru: filter.free_mru_gb * (1204 * 1204 * 1204 * 1204)
-		free_sru: filter.free_sru_gb * (1204 * 1204 * 1204 * 1204)
-		free_hru: filter.free_hru_gb * (1204 * 1204 * 1204 * 1204)
-	}
-	nodes := c.get_nodes(filter_) or {
-		return error_with_code('http client error: $err.msg()', gridproxy.err_http_client)
-	}
-
-	return nodes
-}
-
-// check if API server is reachable and responding.
+// is_pingable checks if API server is reachable and responding.
 //
 // returns: bool, `true` if API server is reachable and responding, `false` otherwise
 pub fn (mut c GridProxyClient) is_pingable() bool {
@@ -461,4 +340,31 @@ pub fn (mut c GridProxyClient) is_pingable() bool {
 	}
 
 	return true
+}
+// Iterators have the next() method, which returns the next page of the objects.
+// to be used in a loop to get all available results, or to lazely traverse pages till a specific condition is met.
+
+// get_nodes_iterator creates an iterator through node pages with custom filter
+pub fn (mut c GridProxyClient) get_nodes_iterator(filter NodeFilter) NodeIterator {
+	return NodeIterator{filter, c.get_nodes}
+}
+
+// get_gateways_iterator creates an iterator through gateway pages with custom filter
+pub fn (mut c GridProxyClient) get_gateways_iterator(filter NodeFilter) NodeIterator {
+	return NodeIterator{filter, c.get_gateways}
+}
+
+// get_farms_iterator creates an iterator through farms pages with custom filter
+pub fn (mut c GridProxyClient) get_farms_iterator(filter FarmFilter) FarmIterator {
+	return FarmIterator{filter, c.get_farms}
+}
+
+// get_twins_iterator creates an iterator through twin pages with custom filter
+pub fn (mut c GridProxyClient) get_twins_iterator(filter TwinFilter) TwinIterator {
+	return TwinIterator{filter, c.get_twins}
+}
+
+// get_contracts_iterator creates an iterator through contracts pages with custom filter
+pub fn (mut c GridProxyClient) get_contracts_iterator(filter ContractFilter) ContractIterator {
+	return ContractIterator{filter, c.get_contracts}
 }

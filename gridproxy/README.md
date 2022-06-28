@@ -18,6 +18,7 @@ Easily access Threefold grid APIs from vlang. gridproxy is v module include the 
     - [Installation](#installation)
   - [Development](#development)
   - [client usage](#client-usage)
+  - [client examples](#client-examples)
   - [Contributing](#contributing)
   - [Versioning](#versioning)
   - [Authors](#authors)
@@ -181,6 +182,12 @@ If you want to use the client, you need to import it in your code.
   // the helper methods available for the billing to help you convert the TFT units as well
   ```
   for all available helper methods, see [GridProxy API client modules doc](./docs/)
+
+  TODO:
+  * Documented the client iterators
+
+## Client Examples
+there are scripts available to serve as examples in the [examples](../examples/) directory. [Docs](../examples/README.md)
 
 ## Contributing
 

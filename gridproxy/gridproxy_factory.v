@@ -2,6 +2,7 @@ module gridproxy
 
 import freeflowuniverse.crystallib.httpconnection
 
+[heap]
 pub struct GridProxyClient {
 pub mut:
 	http_client httpconnection.HTTPConnection
@@ -50,7 +51,12 @@ fn tfgrid_net_string(net TFGridNet) string {
 		.qa { 'qa' }
 	}
 }
-
+// get returns a gridproxy client for the given net.
+//
+// * `net` (enum): the net to get the gridproxy client for (one of .main, .test, .dev, .qa).
+// * `use_redis_cache` (bool): if true, the gridproxy client will use a redis cache and redis should be running on the host. otherwise, the gridproxy client will not use cache.
+//
+// returns: `&GridProxyClient`.
 pub fn get(net TFGridNet, use_redis_cache bool) &GridProxyClient {
 	mut f := factory_get()
 	netstr := tfgrid_net_string(net)

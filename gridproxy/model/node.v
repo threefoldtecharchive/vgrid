@@ -84,13 +84,16 @@ fn calc_available_resources(total_resources NodeResources, used_resources NodeRe
 	}
 }
 
+// calc_available_resources calculate the reservable capacity of the node.
+//
+// Returns: `NodeResources`
 pub fn (n &Node) calc_available_resources() NodeResources {
 	total_resources := n.capacity.total_resources
 	used_resources := n.capacity.used_resources
 	return calc_available_resources(total_resources, used_resources)
 }
 
-// enable the client to have one representation of the node model
+// with_nested_capacity enable the client to have one representation of the node model
 pub fn (n &Node_) with_nested_capacity() Node {
 	return Node{
 		id: n.id
@@ -116,6 +119,7 @@ pub fn (n &Node_) with_nested_capacity() Node {
 	}
 }
 
+// is_online returns true if the node is online, otherwise false.
 pub fn (n &Node) is_online() bool {
 	return n.status == 'up'
 }

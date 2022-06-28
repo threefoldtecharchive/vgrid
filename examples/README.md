@@ -15,6 +15,12 @@ This script to get nodes by city or country or both
   --city 	      name of the city  (optional)
 
   --country 	  name of the country (optional)
+
+  --network     one of (dev, test, qa, main)  (optional)(default to `test`)
+		
+  --max-count   maximum number of nodes to be selected (optional)(default to 0 which means no limit)
+	
+  --cache       enable cache (optional)(default to false)
 ```
 
 ##### You have to specify at least a city or country
@@ -44,6 +50,12 @@ This script to get nodes by city or country or both
     --city 	name of the city  (optional)
 
     --country 	name of the country (optional)
+    
+    --network     one of (dev, test, qa, main)  (optional)(default to `test`)
+		
+    --max-count   maximum number of nodes to be selected (optional)(default to 0 which means no limit)
+	
+    --cache       enable cache (optional)(default to false)
 
   ```
 
@@ -66,6 +78,12 @@ This script to get nodes by city or country or both
   --mru   	nodes   selected should   have a minumum  value of free mru in GB   (memory resource  unit) equal to this  (optional)
 
   --ips 		nodes   selected should   have a minumum  value of free ips (ip address   resource unit)  equal to this    (optional)
+
+  --network     one of (dev, test, qa, main)  (optional)(default to `test`)
+		
+  --max-count   maximum number of nodes to be selected (optional)(default to 0 which means no limit)
+	
+  --cache       enable cache (optional)(default to false)
   ```
 
 - Execute
@@ -98,4 +116,10 @@ This script to get nodes by city or country or both
     --mru   	nodes selected should have a minumum value of free mru in GB (memory resource unit) equal to this (optional)
 
     --ips 		nodes selected should have a minumum value of ips (core resource unit) equal to this  (optional)
+
+    --network     one of (dev, test, qa, main)  (optional)(default to `test`)
+		
+    --max-count   maximum number of nodes to be selected (optional)(default to 0 which means no limit)
+	
+    --cache       enable cache (optional)(default to false)
     ```

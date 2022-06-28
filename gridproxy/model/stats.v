@@ -1,6 +1,6 @@
 module model
 
-pub struct GridStats {
+pub struct GridStat {
 pub:
 	nodes              u64
 	farms              u64

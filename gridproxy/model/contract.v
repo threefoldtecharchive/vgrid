@@ -26,6 +26,9 @@ pub:
 	billing       []ContractBilling   [json: billing]
 }
 
+// total_billed returns the total amount billed for the contract.
+//
+// returns: `TFTUnit`
 pub fn (c &Contract) total_billed() TFTUnit {
 	if c.billing.len == 0 {
 		return 0

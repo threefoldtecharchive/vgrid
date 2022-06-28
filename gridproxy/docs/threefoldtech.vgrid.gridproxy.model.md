@@ -8,26 +8,37 @@
   - [to_megabytes](#to_megabytes)
   - [to_gigabytes](#to_gigabytes)
   - [to_terabytes](#to_terabytes)
+  - [str](#str)
+- [ContractGetter](#ContractGetter)
+- [FarmGetter](#FarmGetter)
+- [NodeGetter](#NodeGetter)
 - [SecondUnit](#SecondUnit)
   - [to_minutes](#to_minutes)
   - [to_hours](#to_hours)
   - [to_days](#to_days)
+  - [str](#str)
 - [TFTUnit](#TFTUnit)
   - [to_utft](#to_utft)
   - [to_mtft](#to_mtft)
   - [to_tft](#to_tft)
+- [TwinGetter](#TwinGetter)
 - [UnixTime](#UnixTime)
   - [to_time](#to_time)
+  - [str](#str)
 - [NodeStatus](#NodeStatus)
 - [Contract](#Contract)
   - [total_billed](#total_billed)
 - [ContractBilling](#ContractBilling)
 - [ContractFilter](#ContractFilter)
   - [to_map](#to_map)
+- [ContractIterator](#ContractIterator)
+  - [next](#next)
 - [Farm](#Farm)
 - [FarmFilter](#FarmFilter)
   - [to_map](#to_map)
-- [GridStats](#GridStats)
+- [FarmIterator](#FarmIterator)
+  - [next](#next)
+- [GridStat](#GridStat)
 - [Node](#Node)
   - [calc_available_resources](#calc_available_resources)
   - [is_online](#is_online)
@@ -35,17 +46,21 @@
   - [with_nested_capacity](#with_nested_capacity)
 - [NodeCapacity](#NodeCapacity)
 - [NodeContractDetails](#NodeContractDetails)
+- [NodeFilter](#NodeFilter)
+  - [to_map](#to_map)
+- [NodeIterator](#NodeIterator)
+  - [next](#next)
 - [NodeLocation](#NodeLocation)
 - [NodeResources](#NodeResources)
-- [NodesFilter](#NodesFilter)
-  - [to_map](#to_map)
 - [PublicConfig](#PublicConfig)
 - [PublicIP](#PublicIP)
-- [ResourcesFilter](#ResourcesFilter)
-- [StatsFilter](#StatsFilter)
+- [ResourceFilter](#ResourceFilter)
+- [StatFilter](#StatFilter)
 - [Twin](#Twin)
 - [TwinFilter](#TwinFilter)
   - [to_map](#to_map)
+- [TwinIterator](#TwinIterator)
+  - [next](#next)
 
 ## ByteUnit
 ## to_megabytes
@@ -67,6 +82,38 @@ fn (u ByteUnit) to_gigabytes() f64
 ## to_terabytes
 ```v
 fn (u ByteUnit) to_terabytes() f64
+```
+
+
+[[Return to contents]](#Contents)
+
+## str
+```v
+fn (u ByteUnit) str() string
+```
+
+
+[[Return to contents]](#Contents)
+
+## ContractGetter
+```v
+type ContractGetter = fn (ContractFilter) ?[]Contract
+```
+
+
+[[Return to contents]](#Contents)
+
+## FarmGetter
+```v
+type FarmGetter = fn (FarmFilter) ?[]Farm
+```
+
+
+[[Return to contents]](#Contents)
+
+## NodeGetter
+```v
+type NodeGetter = fn (NodeFilter) ?[]Node
 ```
 
 
@@ -97,6 +144,14 @@ fn (u SecondUnit) to_days() f64
 
 [[Return to contents]](#Contents)
 
+## str
+```v
+fn (u SecondUnit) str() string
+```
+
+
+[[Return to contents]](#Contents)
+
 ## TFTUnit
 ## to_utft
 ```v
@@ -122,10 +177,26 @@ fn (t TFTUnit) to_tft() f64
 
 [[Return to contents]](#Contents)
 
+## TwinGetter
+```v
+type TwinGetter = fn (TwinFilter) ?[]Twin
+```
+
+
+[[Return to contents]](#Contents)
+
 ## UnixTime
 ## to_time
 ```v
 fn (t UnixTime) to_time() Time
+```
+
+
+[[Return to contents]](#Contents)
+
+## str
+```v
+fn (t UnixTime) str() string
 ```
 
 
@@ -164,6 +235,9 @@ pub:
 fn (c &Contract) total_billed() TFTUnit
 ```
 
+total_billed returns the total amount billed for the contract.  
+
+returns: `TFTUnit`
 
 [[Return to contents]](#Contents)
 
@@ -183,6 +257,7 @@ pub:
 ## ContractFilter
 ```v
 struct ContractFilter {
+pub mut:
 	page                 u64 | EmptyOption = EmptyOption{}
 	size                 u64 | EmptyOption = EmptyOption{}
 	ret_count            u64 | EmptyOption = EmptyOption{}
@@ -210,6 +285,27 @@ serialize ContractFilter to map
 
 [[Return to contents]](#Contents)
 
+## ContractIterator
+```v
+struct ContractIterator {
+pub mut:
+	filter ContractFilter
+pub:
+	get_func ContractGetter
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## next
+```v
+fn (mut i ContractIterator) next() ?[]Contract
+```
+
+
+[[Return to contents]](#Contents)
+
 ## Farm
 ```v
 struct Farm {
@@ -231,7 +327,7 @@ pub:
 ## FarmFilter
 ```v
 struct FarmFilter {
-pub:
+pub mut:
 	page               u64 | EmptyOption = EmptyOption{}
 	size               u64 | EmptyOption = EmptyOption{}
 	ret_count          u64 | EmptyOption = EmptyOption{}
@@ -260,9 +356,30 @@ serialize FarmFilter to map
 
 [[Return to contents]](#Contents)
 
-## GridStats
+## FarmIterator
 ```v
-struct GridStats {
+struct FarmIterator {
+pub mut:
+	filter FarmFilter
+pub:
+	get_func FarmGetter
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## next
+```v
+fn (mut i FarmIterator) next() ?[]Farm
+```
+
+
+[[Return to contents]](#Contents)
+
+## GridStat
+```v
+struct GridStat {
 pub:
 	nodes              u64
 	farms              u64
@@ -315,6 +432,9 @@ pub:
 fn (n &Node) calc_available_resources() NodeResources
 ```
 
+calc_available_resources calculate the reservable capacity of the node.  
+
+Returns: `NodeResources`
 
 [[Return to contents]](#Contents)
 
@@ -323,6 +443,7 @@ fn (n &Node) calc_available_resources() NodeResources
 fn (n &Node) is_online() bool
 ```
 
+is_online returns true if the node is online, otherwise false.  
 
 [[Return to contents]](#Contents)
 
@@ -360,7 +481,7 @@ this is ugly, but it works. we need two models for `Node` and reimplemnt the sam
 fn (n &Node_) with_nested_capacity() Node
 ```
 
-enable the client to have one representation of the node model
+with_nested_capacity enable the client to have one representation of the node model
 
 [[Return to contents]](#Contents)
 
@@ -390,36 +511,10 @@ pub:
 
 [[Return to contents]](#Contents)
 
-## NodeLocation
+## NodeFilter
 ```v
-struct NodeLocation {
-pub:
-	country string
-	city    string
-}
-```
-
-
-[[Return to contents]](#Contents)
-
-## NodeResources
-```v
-struct NodeResources {
-pub:
-	cru u64
-	mru ByteUnit
-	sru ByteUnit
-	hru ByteUnit
-}
-```
-
-
-[[Return to contents]](#Contents)
-
-## NodesFilter
-```v
-struct NodesFilter {
-pub:
+struct NodeFilter {
+pub mut:
 	page          u64 | EmptyOption = EmptyOption{}
 	size          u64 | EmptyOption = EmptyOption{}
 	ret_count     u64 | EmptyOption = EmptyOption{}
@@ -447,10 +542,57 @@ pub:
 
 ## to_map
 ```v
-fn (p &NodesFilter) to_map() map[string]string
+fn (p &NodeFilter) to_map() map[string]string
 ```
 
-serialize NodesFilter to map
+serialize NodeFilter to map
+
+[[Return to contents]](#Contents)
+
+## NodeIterator
+```v
+struct NodeIterator {
+pub mut:
+	filter NodeFilter
+pub:
+	get_func NodeGetter
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## next
+```v
+fn (mut i NodeIterator) next() ?[]Node
+```
+
+
+[[Return to contents]](#Contents)
+
+## NodeLocation
+```v
+struct NodeLocation {
+pub:
+	country string
+	city    string
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## NodeResources
+```v
+struct NodeResources {
+pub:
+	cru u64
+	mru ByteUnit
+	sru ByteUnit
+	hru ByteUnit
+}
+```
+
 
 [[Return to contents]](#Contents)
 
@@ -484,10 +626,10 @@ pub:
 
 [[Return to contents]](#Contents)
 
-## ResourcesFilter
+## ResourceFilter
 ```v
-struct ResourcesFilter {
-pub:
+struct ResourceFilter {
+pub mut:
 	free_mru_gb u64
 	free_sru_gb u64
 	free_hru_gb u64
@@ -498,10 +640,10 @@ pub:
 
 [[Return to contents]](#Contents)
 
-## StatsFilter
+## StatFilter
 ```v
-struct StatsFilter {
-pub:
+struct StatFilter {
+pub mut:
 	status NodeStatus
 }
 ```
@@ -525,6 +667,7 @@ pub:
 ## TwinFilter
 ```v
 struct TwinFilter {
+pub mut:
 	page       u64 | EmptyOption = EmptyOption{}
 	size       u64 | EmptyOption = EmptyOption{}
 	ret_count  string
@@ -541,8 +684,29 @@ struct TwinFilter {
 fn (p &TwinFilter) to_map() map[string]string
 ```
 
-serialize NodesFilter to map
+serialize TwinFilter to map
 
 [[Return to contents]](#Contents)
 
-#### Powered by vdoc. Generated on: 25 Jun 2022 02:22:35
+## TwinIterator
+```v
+struct TwinIterator {
+pub mut:
+	filter TwinFilter
+pub:
+	get_func TwinGetter
+}
+```
+
+
+[[Return to contents]](#Contents)
+
+## next
+```v
+fn (mut i TwinIterator) next() ?[]Twin
+```
+
+
+[[Return to contents]](#Contents)
+
+#### Powered by vdoc. Generated on: 28 Jun 2022 13:01:22
