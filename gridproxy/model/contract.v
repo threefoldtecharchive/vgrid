@@ -2,7 +2,7 @@ module model
 
 pub struct ContractBilling {
 pub:
-	amount_billed     TFTUnit  [json: amountBilled]
+	amount_billed     DropTFTUnit  [json: amountBilled]
 	discount_received string   [json: discountReceived]
 	timestamp         UnixTime [json: timestamp]
 }
@@ -28,8 +28,8 @@ pub:
 
 // total_billed returns the total amount billed for the contract.
 //
-// returns: `TFTUnit`
-pub fn (c &Contract) total_billed() TFTUnit {
+// returns: `DropTFTUnit`
+pub fn (c &Contract) total_billed() DropTFTUnit {
 	if c.billing.len == 0 {
 		return 0
 	}
@@ -37,7 +37,7 @@ pub fn (c &Contract) total_billed() TFTUnit {
 	for b in c.billing {
 		total += b.amount_billed
 	}
-	return TFTUnit(total)
+	return DropTFTUnit(total)
 }
 
 // TODO: Implement Limit struct (size, page, retcount, randomize)

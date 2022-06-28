@@ -75,21 +75,21 @@ pub fn (t UnixTime) str() string {
 	return '${t.to_time().local()}'
 }
 
-type TFTUnit = u64
+type DropTFTUnit = u64
 
-pub fn (t TFTUnit) to_utft() f64 {
+pub fn (t DropTFTUnit) to_utft() f64 {
 	return f64(t) / 10.0
 }
 
-pub fn (t TFTUnit) to_mtft() f64 {
+pub fn (t DropTFTUnit) to_mtft() f64 {
 	return f64(t) / pow10(4)
 }
 
-pub fn (t TFTUnit) to_tft() f64 {
+pub fn (t DropTFTUnit) to_tft() f64 {
 	return f64(t) / pow10(7)
 }
 
-pub fn (u TFTUnit) str() string {
+pub fn (u DropTFTUnit) str() string {
 	if u > pow10(7) {
 		return '${u.to_tft():.3} TFT'
 	} else if u > pow10(4) {
@@ -97,7 +97,7 @@ pub fn (u TFTUnit) str() string {
 	} else if u > 10 {
 		return '${u.to_utft():.3} uTFT'
 	}
-	return '${u64(u)} ?TFT' // TODO: what is this?
+	return '${u64(u)} dTFT' // Short for dropTFT as dylan suggests till we have an officail name!
 }
 
 struct EmptyOption {}

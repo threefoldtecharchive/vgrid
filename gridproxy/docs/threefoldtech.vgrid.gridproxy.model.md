@@ -17,7 +17,7 @@
   - [to_hours](#to_hours)
   - [to_days](#to_days)
   - [str](#str)
-- [TFTUnit](#TFTUnit)
+- [DropTFTUnit](#DropTFTUnit)
   - [to_utft](#to_utft)
   - [to_mtft](#to_mtft)
   - [to_tft](#to_tft)
@@ -152,10 +152,10 @@ fn (u SecondUnit) str() string
 
 [[Return to contents]](#Contents)
 
-## TFTUnit
+## DropTFTUnit
 ## to_utft
 ```v
-fn (t TFTUnit) to_utft() f64
+fn (t DropTFTUnit) to_utft() f64
 ```
 
 
@@ -163,7 +163,7 @@ fn (t TFTUnit) to_utft() f64
 
 ## to_mtft
 ```v
-fn (t TFTUnit) to_mtft() f64
+fn (t DropTFTUnit) to_mtft() f64
 ```
 
 
@@ -171,7 +171,7 @@ fn (t TFTUnit) to_mtft() f64
 
 ## to_tft
 ```v
-fn (t TFTUnit) to_tft() f64
+fn (t DropTFTUnit) to_tft() f64
 ```
 
 
@@ -232,12 +232,12 @@ pub:
 
 ## total_billed
 ```v
-fn (c &Contract) total_billed() TFTUnit
+fn (c &Contract) total_billed() DropTFTUnit
 ```
 
 total_billed returns the total amount billed for the contract.  
 
-returns: `TFTUnit`
+returns: `DropTFTUnit`
 
 [[Return to contents]](#Contents)
 
@@ -245,7 +245,7 @@ returns: `TFTUnit`
 ```v
 struct ContractBilling {
 pub:
-	amount_billed     TFTUnit  [json: amountBilled]
+	amount_billed     DropTFTUnit  [json: amountBilled]
 	discount_received string   [json: discountReceived]
 	timestamp         UnixTime [json: timestamp]
 }

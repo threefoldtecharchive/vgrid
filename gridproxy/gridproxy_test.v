@@ -47,7 +47,7 @@ const (
 		rented_by_twin_id: 0
 	}
 	dummy_contract_billing = model.ContractBilling{
-		amount_billed: model.TFTUnit(10000000) // 1 TFT == 1000 mTFT == 1000000 uTFT
+		amount_billed: model.DropTFTUnit(10000000) // 1 TFT == 1000 mTFT == 1000000 uTFT
 		discount_received: 'None'
 		timestamp: model.UnixTime(1655118966)
 	}
