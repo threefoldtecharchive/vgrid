@@ -89,4 +89,15 @@ pub fn (t TFTUnit) to_tft() f64 {
 	return f64(t) / pow10(7)
 }
 
+pub fn (u TFTUnit) str() string {
+	if u > pow10(7) {
+		return '${u.to_tft():.3} TFT'
+	} else if u > pow10(4) {
+		return '${u.to_mtft():.3} mTFT'
+	} else if u > 10 {
+		return '${u.to_utft():.3} uTFT'
+	}
+	return '${u64(u)} ?TFT' // TODO: what is this?
+}
+
 struct EmptyOption {}
