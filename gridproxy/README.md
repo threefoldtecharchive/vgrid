@@ -36,22 +36,32 @@ the project structure is as follows:
 
 ```
 vgrid
-└─ gridproxy
-   ├─ README.md
-   ├─ docs
-   │  ├─ gridproxy.md
-   │  └─ gridproxy.model.md
-   ├─ gridproxy.v
-   ├─ gridproxy_factory.v
-   ├─ gridproxy_test.v
-   └─ model
-      ├─ contract.v
-      ├─ farm.v
-      ├─ filter.v
-      ├─ model.v
-      ├─ node.v
-      ├─ stats.v
-      └─ twin.v
+│  ├─ README.md
+├─ LICENSE
+├─ README.md
+├─ examples
+│  ├─ README.md
+│  ├─ get_nodes_by_capacity.v
+│  └─ get_nodes_by_city_country.v
+├─ gridproxy
+│  ├─ README.md
+│  ├─ docs
+│  │  ├─ threefoldtech.vgrid.gridproxy.md
+│  │  └─ threefoldtech.vgrid.gridproxy.model.md
+│  ├─ gridproxy_core.v
+│  ├─ gridproxy_factory.v
+│  ├─ gridproxy_highlevel.v
+│  ├─ gridproxy_test.v
+│  └─ model
+│     ├─ contract.v
+│     ├─ farm.v
+│     ├─ filter.v
+│     ├─ iterators.v
+│     ├─ model.v
+│     ├─ node.v
+│     ├─ stats.v
+│     └─ twin.v
+└─ v.mod
 
 ```
 
@@ -184,7 +194,7 @@ If you want to use the client, you need to import it in your code.
   for all available helper methods, see [GridProxy API client modules doc](./docs/)
 
   TODO:
-  * Documented the client iterators
+  * Documented the client iterators and higher-level methods
 
 ## Client Examples
 there are scripts available to serve as examples in the [examples](../examples/) directory. [Docs](../examples/README.md)
