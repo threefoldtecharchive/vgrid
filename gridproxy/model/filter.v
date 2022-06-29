@@ -7,7 +7,7 @@ pub struct FarmFilter {
 	pub mut:
 		page               u64 | EmptyOption = EmptyOption{}
 		size               u64 | EmptyOption = EmptyOption{}
-		ret_count          u64 | EmptyOption = EmptyOption{}
+		ret_count          bool | EmptyOption = EmptyOption{}
 		free_ips           u64 | EmptyOption = EmptyOption{}
 		total_ips          u64 | EmptyOption = EmptyOption{}
 		stellar_address    string
@@ -37,7 +37,7 @@ pub fn (f &FarmFilter) to_map() map[string]string {
 	}
 	match f.ret_count {
 		EmptyOption {}
-		u64 {
+		bool {
 			m['ret_count'] = f.ret_count.str()
 		}
 	}
@@ -97,7 +97,7 @@ pub struct ContractFilter {
 	pub mut:
 		page                 u64 | EmptyOption = EmptyOption{}
 		size                 u64 | EmptyOption = EmptyOption{}
-		ret_count            u64 | EmptyOption = EmptyOption{}
+		ret_count            bool | EmptyOption = EmptyOption{}
 		contract_id          u64 | EmptyOption = EmptyOption{}
 		twin_id              u64 | EmptyOption = EmptyOption{}
 		node_id              u64 | EmptyOption = EmptyOption{}
@@ -126,7 +126,7 @@ pub fn (f &ContractFilter) to_map() map[string]string {
 	}
 	match f.ret_count {
 		EmptyOption {}
-		u64 {
+		bool {
 			m['ret_count'] = f.ret_count.str()
 		}
 	}
@@ -177,7 +177,7 @@ pub struct NodeFilter {
 	pub mut:
 		page          u64 | EmptyOption = EmptyOption{}
 		size          u64 | EmptyOption = EmptyOption{}
-		ret_count     u64 | EmptyOption = EmptyOption{}
+		ret_count     bool | EmptyOption = EmptyOption{}
 		free_mru      u64 | EmptyOption = EmptyOption{}
 		free_sru      u64 | EmptyOption = EmptyOption{}
 		free_hru      u64 | EmptyOption = EmptyOption{}
@@ -213,7 +213,7 @@ pub fn (p &NodeFilter) to_map() map[string]string {
 	}
 	match p.ret_count {
 		EmptyOption {}
-		u64 {
+		bool {
 			m['ret_count'] = p.ret_count.str()
 		}
 	}
@@ -318,7 +318,7 @@ pub struct TwinFilter {
 	pub mut:
 		page       u64 | EmptyOption = EmptyOption{}
 		size       u64 | EmptyOption = EmptyOption{}
-		ret_count  string
+		ret_count  bool | EmptyOption = EmptyOption{}
 		twin_id    u64 | EmptyOption = EmptyOption{}
 		account_id string
 }
@@ -338,8 +338,11 @@ pub fn (p &TwinFilter) to_map() map[string]string {
 			m['size'] = p.size.str()
 		}
 	}
-	if p.ret_count != '' {
-		m['ret_count'] = p.ret_count
+	match p.ret_count {
+		EmptyOption {}
+		bool {
+			m['ret_count'] = p.ret_count.str()
+		}
 	}
 	match p.twin_id {
 		EmptyOption {}

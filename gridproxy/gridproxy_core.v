@@ -89,7 +89,7 @@ pub fn (mut c GridProxyClient) get_gateway_by_id(node_id u64) ?Node {
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
-// * `ret_count` (u64): Set nodes' count on headers based on filter. [optional].
+// * `ret_count` (bool): Set nodes' count on headers based on filter. [optional].
 // * `free_mru` (u64): Min free reservable mru in bytes. [optional].
 // * `free_hru` (u64): Min free reservable hru in bytes. [optional].
 // * `free_sru` (u64): Min free reservable sru in bytes. [optional].
@@ -136,7 +136,7 @@ pub fn (mut c GridProxyClient) get_nodes(params NodeFilter) ?[]Node {
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
-// * `ret_count` (u64): Set nodes' count on headers based on filter. [optional].
+// * `ret_count` (bool): Set nodes' count on headers based on filter. [optional].
 // * `free_mru` (u64): Min free reservable mru in bytes. [optional].
 // * `free_hru` (u64): Min free reservable hru in bytes. [optional].
 // * `free_sru` (u64): Min free reservable sru in bytes. [optional].
@@ -216,7 +216,7 @@ pub fn (mut c GridProxyClient) get_stats(filter StatFilter) ?GridStat {
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
-// * `ret_count` (string): Set farms' count on headers based on filter. [optional].
+// * `ret_count` (bool): Set farms' count on headers based on filter. [optional].
 // * `twin_id` (u64): twin id. [optional].
 // * `account_id` (string): account address. [optional].
 //
@@ -248,7 +248,7 @@ pub fn (mut c GridProxyClient) get_twins(params TwinFilter) ?[]Twin {
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
-// * `ret_count` (string): Set farms' count on headers based on filter. [optional].
+// * `ret_count` (bool): Set farms' count on headers based on filter. [optional].
 // * `contract_id` (u64): contract id. [optional].
 // * `twin_id` (u64): twin id. [optional].
 // * `node_id` (u64): node id which contract is deployed on in case of ('rent' or 'node' contracts). [optional].
@@ -287,7 +287,7 @@ pub fn (mut c GridProxyClient) get_contracts(params ContractFilter) ?[]Contract 
 //
 // * `page` (u64): Page number. [optional].
 // * `size` (u64): Max result per page. [optional].
-// * `ret_count` (string): Set farms' count on headers based on filter. [optional].
+// * `ret_count` (bool): Set farms' count on headers based on filter. [optional].
 // * `free_ips` (u64): Min number of free ips in the farm. [optional].
 // * `total_ips` (u64): Min number of total ips in the farm. [optional].
 // * `pricing_policy_id` (u64): Pricing policy id. [optional].

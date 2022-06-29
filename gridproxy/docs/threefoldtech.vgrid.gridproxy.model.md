@@ -258,16 +258,16 @@ pub:
 ```v
 struct ContractFilter {
 pub mut:
-	page                 u64 | EmptyOption = EmptyOption{}
-	size                 u64 | EmptyOption = EmptyOption{}
-	ret_count            u64 | EmptyOption = EmptyOption{}
-	contract_id          u64 | EmptyOption = EmptyOption{}
-	twin_id              u64 | EmptyOption = EmptyOption{}
-	node_id              u64 | EmptyOption = EmptyOption{}
+	page                 u64  | EmptyOption = EmptyOption{}
+	size                 u64  | EmptyOption = EmptyOption{}
+	ret_count            bool | EmptyOption = EmptyOption{}
+	contract_id          u64  | EmptyOption = EmptyOption{}
+	twin_id              u64  | EmptyOption = EmptyOption{}
+	node_id              u64  | EmptyOption = EmptyOption{}
 	contract_type        string
 	state                string
 	name                 string
-	number_of_public_ips u64 | EmptyOption = EmptyOption{}
+	number_of_public_ips u64  | EmptyOption = EmptyOption{}
 	deployment_data      string
 	deployment_hash      string
 }
@@ -328,15 +328,15 @@ pub:
 ```v
 struct FarmFilter {
 pub mut:
-	page               u64 | EmptyOption = EmptyOption{}
-	size               u64 | EmptyOption = EmptyOption{}
-	ret_count          u64 | EmptyOption = EmptyOption{}
-	free_ips           u64 | EmptyOption = EmptyOption{}
-	total_ips          u64 | EmptyOption = EmptyOption{}
+	page               u64  | EmptyOption = EmptyOption{}
+	size               u64  | EmptyOption = EmptyOption{}
+	ret_count          bool | EmptyOption = EmptyOption{}
+	free_ips           u64  | EmptyOption = EmptyOption{}
+	total_ips          u64  | EmptyOption = EmptyOption{}
 	stellar_address    string
-	pricing_policy_id  u64 | EmptyOption = EmptyOption{}
-	farm_id            u64 | EmptyOption = EmptyOption{}
-	twin_id            u64 | EmptyOption = EmptyOption{}
+	pricing_policy_id  u64  | EmptyOption = EmptyOption{}
+	farm_id            u64  | EmptyOption = EmptyOption{}
+	twin_id            u64  | EmptyOption = EmptyOption{}
 	name               string
 	name_contains      string
 	certification_type string
@@ -515,13 +515,13 @@ pub:
 ```v
 struct NodeFilter {
 pub mut:
-	page          u64 | EmptyOption = EmptyOption{}
-	size          u64 | EmptyOption = EmptyOption{}
-	ret_count     u64 | EmptyOption = EmptyOption{}
-	free_mru      u64 | EmptyOption = EmptyOption{}
-	free_sru      u64 | EmptyOption = EmptyOption{}
-	free_hru      u64 | EmptyOption = EmptyOption{}
-	free_ips      u64 | EmptyOption = EmptyOption{}
+	page          u64  | EmptyOption = EmptyOption{}
+	size          u64  | EmptyOption = EmptyOption{}
+	ret_count     bool | EmptyOption = EmptyOption{}
+	free_mru      u64  | EmptyOption = EmptyOption{}
+	free_sru      u64  | EmptyOption = EmptyOption{}
+	free_hru      u64  | EmptyOption = EmptyOption{}
+	free_ips      u64  | EmptyOption = EmptyOption{}
 	city          string
 	country       string
 	farm_name     string
@@ -668,10 +668,10 @@ pub:
 ```v
 struct TwinFilter {
 pub mut:
-	page       u64 | EmptyOption = EmptyOption{}
-	size       u64 | EmptyOption = EmptyOption{}
-	ret_count  string
-	twin_id    u64 | EmptyOption = EmptyOption{}
+	page       u64  | EmptyOption = EmptyOption{}
+	size       u64  | EmptyOption = EmptyOption{}
+	ret_count  bool | EmptyOption = EmptyOption{}
+	twin_id    u64  | EmptyOption = EmptyOption{}
 	account_id string
 }
 ```
