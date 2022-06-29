@@ -19,13 +19,13 @@ fn main(){
 
 	if "--city" in os.args {
 		index_val:=os.args.index("--city")
-		nodes_filter.city = os.args[index_val+1].title() // ensure that the city is in title case, which is the case in the database.
+		nodes_filter.city = os.args[index_val+1].to_lower().title() // ensure that the city is in title case, which is the case in the database.
 
 	}
 
 	if "--country" in os.args {
 		mut index_val:=os.args.index("--country")
-		nodes_filter.country = os.args[index_val+1].title() // ensure that the country is in title case, which is the case in the database.
+		nodes_filter.country = os.args[index_val+1].to_lower().title() // ensure that the country is in title case, which is the case in the database.
 
 	}
 
