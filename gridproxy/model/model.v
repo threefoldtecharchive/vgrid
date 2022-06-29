@@ -18,11 +18,11 @@ pub fn (u ByteUnit) to_terabytes() f64 {
 }
 
 pub fn (u ByteUnit) str() string {
-	if u > 1e+12 {
+	if u >= 1e+12 {
 		return '${u.to_terabytes():.2} TB'
-	} else if u > 1e+9 {
+	} else if u >= 1e+9 {
 		return '${u.to_gigabytes():.2} GB'
-	} else if u > 1e+6 {
+	} else if u >= 1e+6 {
 		return '${u.to_megabytes():.2} MB'
 	}
 	return '${u64(u)} Bytes'
@@ -94,11 +94,11 @@ pub fn (t DropTFTUnit) to_utft() f64 {
 }
 
 pub fn (u DropTFTUnit) str() string {
-	if u > pow10(7) {
+	if u >= pow10(7) {
 		return '${u.to_tft():.3} TFT'
-	} else if u > pow10(4) {
+	} else if u >= pow10(4) {
 		return '${u.to_mtft():.3} mTFT'
-	} else if u > 10 {
+	} else if u >= 10 {
 		return '${u.to_utft():.3} uTFT'
 	}
 	return '${u64(u)} dTFT' // Short for dropTFT (1 TFT = 10_000_000 drops). dylan suggests the name and i'm using this till we have an officail name!
