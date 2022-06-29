@@ -29,6 +29,7 @@ pub fn (u ByteUnit) str() string {
 
 }
 
+// SecondUnit represents a duration in seconds
 type SecondUnit = u64
 
 pub fn (u SecondUnit) to_minutes() f64 {
@@ -65,6 +66,7 @@ pub fn (u SecondUnit) str() string {
 	return str 	
 }
 
+// UnixTime represent time in seconds since epoch (timestamp)
 type UnixTime = u64
 
 pub fn (t UnixTime) to_time() Time {
@@ -75,18 +77,20 @@ pub fn (t UnixTime) str() string {
 	return '${t.to_time().local()}'
 }
 
+// this is the smallest unit used to calculate the billing and and the one natively fetched from the API
+// 1 TFT = 10_000_000 drops = 1_000 mTFT = 1_000_000 uTFT
 type DropTFTUnit = u64
 
-pub fn (t DropTFTUnit) to_utft() f64 {
-	return f64(t) / 10.0
+pub fn (t DropTFTUnit) to_tft() f64 {
+	return f64(t) / pow10(7) // 1 TFT = 10_000_000 drops
 }
 
 pub fn (t DropTFTUnit) to_mtft() f64 {
-	return f64(t) / pow10(4)
+	return f64(t) / pow10(4) // 1 mTFT (milliTFT) = 10_000 drops
 }
 
-pub fn (t DropTFTUnit) to_tft() f64 {
-	return f64(t) / pow10(7)
+pub fn (t DropTFTUnit) to_utft() f64 {
+	return f64(t) / 10.0 // 1 uTFT (microTFT) = 10 drops
 }
 
 pub fn (u DropTFTUnit) str() string {
@@ -97,7 +101,7 @@ pub fn (u DropTFTUnit) str() string {
 	} else if u > 10 {
 		return '${u.to_utft():.3} uTFT'
 	}
-	return '${u64(u)} dTFT' // Short for dropTFT as dylan suggests till we have an officail name!
+	return '${u64(u)} dTFT' // Short for dropTFT (1 TFT = 10_000_000 drops). dylan suggests the name and i'm using this till we have an officail name!
 }
 
 struct EmptyOption {}
