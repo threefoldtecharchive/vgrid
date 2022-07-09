@@ -18,7 +18,7 @@ Easily access Threefold grid APIs from vlang. gridproxy is v module include the 
     - [Installation](#installation)
   - [Development](#development)
   - [client usage](#client-usage)
-  - [client examples](#client-examples)
+  - [Client Examples](#client-examples)
   - [Contributing](#contributing)
   - [Versioning](#versioning)
   - [Authors](#authors)
@@ -101,7 +101,9 @@ or your os specific instructions for running redis-server as a service. on linux
   ```
 
 ## Development
+
 We assume that you runs the commands in the project root directory.
+
 * You don't need to worry about formatting your code or setting style guidelines. v fmt takes care of that
   ```sh
   v fmt -w ./gridproxy/
