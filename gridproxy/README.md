@@ -74,7 +74,6 @@ You would require the following tools to develop and run the project:
   ```sh
   v install https://github.com/freeflowuniverse/crystallib
   ```
-  ```sh
 * Redis-server unless you are set the caching option to false
   * see [here](https://redis.io/docs/getting-started/installation/) for redis-server installation instructions
   * start the redis-server on default tcp port, you can use `redis-server` command.
